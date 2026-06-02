@@ -4,6 +4,7 @@
 
 - `raw/` — immutable source documents (articles, papers, notes)
 - `wiki/` — LLM-maintained markdown files
+  - `wiki/images/` — extracted figures, organized by paper
   - `wiki/entities/` — entity/人物/事物页面
   - `wiki/concepts/` — 概念/术语页面
   - `wiki/sources/` — 来源摘要页面
@@ -14,4 +15,9 @@
 
 - All wiki pages use Markdown with YAML frontmatter
 - Cross-reference using `[[page-name]]` links
-- Update `index.md` and `log.md` on every ingest
+- On every ingest: update `index.md`, `log.md`, and `images/index.md`
+- Extracted paper figures go in `wiki/images/[paper-short-name]/`
+- Naming: `[abbr]_[figN]_[keyword].png` (e.g., `smoothquant_fig2_migration_intuition.png`)
+- `wiki/images/index.md` maintains the centralized image index with description table
+- Embed figures in source pages with standard Markdown: `![描述](./images/paper-name/filename.png)`
+- Place images after the paragraph that introduces them, not before

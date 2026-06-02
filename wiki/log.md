@@ -28,7 +28,11 @@
 - 添加 concept 页面: `concepts/gptq.md`
 - 更新 `index.md`
 
-- 添加 source 页面: `sources/awq-activation-aware-weight-quantization-for-llm-compression-and-acceleration.md`
-- 添加 concept 页面: `concepts/awq.md`
-- 更新 `index.md`
+## [2026-06-02] re-analysis | All papers — figures + rewrite
 
+- 重写 3 篇 source 页面（嵌入图片，重新组织叙事流）
+- 用 PyMuPDF4LLM 提取各论文关键图表
+- 新建 `wiki/images/` 目录及 per-paper 子目录
+- 新建 `wiki/images/index.md` 统一图片索引
+- 更新 `CLAUDE.md`（images 目录和命名规范）
+- 更新 `paper-analysis` 技能（figure extraction + markdown 嵌入流程）
