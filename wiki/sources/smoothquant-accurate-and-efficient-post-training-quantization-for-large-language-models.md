@@ -25,11 +25,9 @@ SmoothQuant 的关键洞察：不绕开 outlier，而是通过数学等价变换
 
 ![Figure 2: SmoothQuant 核心直觉——激活因 outlier 难量化（有效 quantization level 极低），平滑后激活和权重都易于量化](../images/smoothquant/smoothquant_fig2_migration_intuition.png)
 
-具体而言，对线性层 Y = X·W，引入平滑变换：
+具体而言，对线性层 $Y = X \cdot W$，引入平滑变换：
 
-```
-Y = (X · diag(s)^{-1}) · (diag(s) · W) = X̂ · Ŵ
-```
+$$Y = (X \cdot \text{diag}(s)^{-1}) \cdot (\text{diag}(s) \cdot W) = \hat{X} \cdot \hat{W}$$
 
 **数据的支撑：** 作者分析了 OPT-13B 线性层的激活和权重幅值分布（Figure 4），发现了三个关键模式：
 
@@ -41,15 +39,13 @@ Y = (X · diag(s)^{-1}) · (diag(s) · W) = X̂ · Ŵ
 
 **迁移强度 α** 控制在激活和权重之间的难度分配：
 
-```
-s_j = max(|X_j|)^α / max(|W_j|)^(1-α)
-```
+$$s_j = \max(|X_j|)^\alpha / \max(|W_j|)^{(1-\alpha)}$$
 
-- α=0 → 全部难度留在激活（激活量化误差大）
-- α=1 → 全部难度迁移到权重（权重量化误差大）
-- **α=0.5** → OPT/BLOOM 最优平衡点
-- α=0.75 → GLM-130B（激活 outlier 更严重）
-- α=0.8 → LLaMA 系列
+- $\alpha=0$ → 全部难度留在激活（激活量化误差大）
+- $\alpha=1$ → 全部难度迁移到权重（权重量化误差大）
+- **$\alpha=0.5$** → OPT/BLOOM 最优平衡点
+- $\alpha=0.75$ → GLM-130B（激活 outlier 更严重）
+- $\alpha=0.8$ → LLaMA 系列
 
 ### 3. Key Implementation Details
 
@@ -60,7 +56,7 @@ s_j = max(|X_j|)^α / max(|W_j|)^(1-α)
 **Smoothing factor 的计算与融合（Figure 5）：**
 - 从预训练数据取 512 条样本离线校准，计算 per-channel 的 max(|X_j|) 和 max(|W_j|)
 - 根据 α 公式计算 s_j
-- 将 diag(s)^{-1} **融合到前一层参数**（LayerNorm 或前一个 Linear 的权重）中，推理时**零额外计算开销**
+- 将 $\text{diag}(s)^{-1}$ **融合到前一层参数**（LayerNorm 或前一个 Linear 的权重）中，推理时**零额外计算开销**
 
 ![Figure 5: SmoothQuant 主流程（α=0.5）——离线计算 smoothing factor 并融合到前一层参数，推理时激活已平滑](../images/smoothquant/smoothquant_fig5_smoothing_factor.png)
 

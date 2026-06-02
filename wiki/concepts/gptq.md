@@ -23,7 +23,7 @@ related:
 
 ## 数学基础
 
-GPTQ 使用 Hessian 矩阵 H = 2XX^T（X 为校准数据的激活）来量化每列权重。量化第 i 列时：
-1. 找到最优量化值 q_i = quant(w_i)
-2. 计算误差 δ_i = (q_i - w_i) / H_{ii}^{-1}
-3. 用 δ_i 更新剩余未量化列：w_{j>i} -= δ_i · H_{:,j}^{-1}
+GPTQ 使用 Hessian 矩阵 $H = 2XX^T$（$X$ 为校准数据的激活）来量化每列权重。量化第 $i$ 列时：
+1. 找到最优量化值 $q_i = \text{quant}(w_i)$
+2. 计算误差 $\delta_i = (q_i - w_i) / H_{ii}^{-1}$
+3. 用 $\delta_i$ 更新剩余未量化列：$w_{j>i} \mathrel{-}= \delta_i \cdot H_{:,j}^{-1}$

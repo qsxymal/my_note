@@ -13,8 +13,8 @@ LLM.int8() 的核心技术之一，用于处理大模型中的极端 outlier 特
 
 ## 公式
 
-给定权重矩阵 W ∈ R^{h×o}，混合精度分解为：
+给定权重矩阵 $W \in \mathbb{R}^{h \times o}$，混合精度分解为：
 
-C ≈ Σ_{h∈O} X_h W_h + S · Σ_{h∉O} X_i8 W_i8
+$$C \approx \sum_{h \in O} X_h W_h + S \cdot \sum_{h \notin O} X_{i8} W_{i8}$$
 
-其中 O 是 outlier 特征维度集合，S 是 Int8 的反归一化项。
+其中 $O$ 是 outlier 特征维度集合，$S$ 是 Int8 的反归一化项。

@@ -26,7 +26,7 @@ W8A8（权重和激活均为 INT8）LLM 后训练量化方案，通过**量化�
 
 ## 关键参数
 
-**迁移强度 α**: s_j = max(|X_j|)^α / max(|W_j|)^(1-α)
+**迁移强度 α**: $s_j = \max(|X_j|)^\alpha / \max(|W_j|)^{(1-\alpha)}$
 - 0.5 → OPT/BLOOM 通用最优
 - 0.75 → GLM-130B（激活 outlier 更严重）
 - 0.8 → LLaMA 系列

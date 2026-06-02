@@ -33,7 +33,7 @@ tags: [quantization, llm, efficiency, inference]
 ### 3. Key Implementation Details
 
 - **量化类型**: absmax symmetric quantization，缩放至 [-127, 127]
-- **Vector-wise**: 对 hidden states X ∈ R^{s×h} 每行一个缩放常数，对 weights W ∈ R^{h×o} 每列一个缩放常数，反归一化通过外积 c_x ⊗ c_w 完成
+- **Vector-wise**: 对 hidden states $X \in \mathbb{R}^{s \times h}$ 每行一个缩放常数，对 weights $W \in \mathbb{R}^{h \times o}$ 每列一个缩放常数，反归一化通过外积 $c_x \otimes c_w$ 完成
 - **Outlier 检测**: 幅度 > 6.0 的特征即视为 outlier；对于 13B 以下模型，outlier 维度 |O| ≤ 7
 - **部署流程**: 加载 16/32-bit checkpoint → 将 feed-forward 和 attention projection 层转换为 Int8 → 立即推理，无需微调
 - **开源**: bitsandbytes 库 + Hugging Face Transformers 集成

@@ -19,15 +19,15 @@ GPTQ 是 **OBQ（Optimal Brain Quantizer）在大模型上的高效扩展**。OB
 
 ![Figure 1: OBQ 到 GPTQ——逐列量化权重，并用 Hessian 信息更新剩余列以补偿误差](../images/gptq/gptq_fig1_method.png)
 
-数学上，GPTQ 使用 Hessian 矩阵 H = 2XX^T（X 为校准数据的激活）来量化每列权重。量化第 i 列时：
-1. 找到最优量化值 q_i = quant(w_i)
-2. 计算误差 δ_i = (q_i - w_i) / H_{ii}^{-1}
-3. 用 δ_i 更新剩余未量化列：w_{j>i} -= δ_i · H_{:,j}^{-1}
+数学上，GPTQ 使用 Hessian 矩阵 $H = 2XX^T$（$X$ 为校准数据的激活）来量化每列权重。量化第 $i$ 列时：
+1. 找到最优量化值 $q_i = \text{quant}(w_i)$
+2. 计算误差 $\delta_i = (q_i - w_i) / H_{ii}^{-1}$
+3. 用 $\delta_i$ 更新剩余未量化列：$w_{j>i} \mathrel{-}= \delta_i \cdot H_{:,j}^{-1}$
 
 这一机制本质上是一种 **"解析形式的反向传播"**——不依赖梯度，而是基于二阶近似的闭式解。
 
 **核心创新——三个实用改进使 OBQ 能在 GPT 规模上运行：**
-1. **懒惰批量更新（Lazy Batch-Updates）** — 将逐列更新合并为批量更新，复杂度从 O(d_row × d_col^3) 降至 O(d_row × d_col^2)
+1. **懒惰批量更新（Lazy Batch-Updates）** — 将逐列更新合并为批量更新，复杂度从 $O(d_{\text{row}} \times d_{\text{col}}^3)$ 降至 $O(d_{\text{row}} \times d_{\text{col}}^2)$
 2. **Cholesky 预处理** — 一次性计算 Hessian 逆的 Cholesky 分解，避免逐列重复计算
 3. **高效分组策略** — 在分组大小（默认 g=128）和量化精度间取得平衡
 

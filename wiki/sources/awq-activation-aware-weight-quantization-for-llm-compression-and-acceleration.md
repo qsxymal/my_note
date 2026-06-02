@@ -30,11 +30,9 @@ tags: [quantization, llm, weight-only, w4a16, on-device]
 ### 3. Key Implementation Details
 
 - **Salient channel 识别**：收集少量校准样本的激活统计，计算每个 channel 的激活幅度均值。激活幅度大的 channel 对应的权重列为 salient。
-- **最优 scale 搜索**：通过极简的网格搜索（仅一个超参数 α）在校准集上优化 s，搜索空间极小（grid size = 20），无需反向传播：
+- **最优 scale 搜索**：通过极简的网格搜索（仅一个超参数 $\alpha$）在校准集上优化 $s$，搜索空间极小（grid size = 20），无需反向传播：
 
-```
-s^* = argmin_s ∥Q(W · diag(s))(diag(s)^{-1} · X) − WX∥
-```
+$$s^* = \arg\min_s \| Q(W \cdot \text{diag}(s))(\text{diag}(s)^{-1} \cdot X) - WX \|$$
 
 - **量化方案**：支持 INT4/INT3 group-wise 量化（group size = 128），兼容多种 4-bit 数据类型
 - **TinyChat 框架**：配套端侧推理引擎，支持 kernel fusion 和 SIMD-aware weight packing（Figure 4），适用于手机等边缘设备
