@@ -36,7 +36,7 @@ GPipe 的目标是：**task-independent、高效、可靠的模型并行方案**
 
 GPipe 的核心是 **batch-splitting pipeline parallelism**：
 
-![Figure 2: GPipe 流水线并行机制——将模型分层放置到 K 个加速器，将 mini-batch 拆分为 M 个 micro-batch，流水线执行以实现接近线性的加速比](../images/gpipe/gpipe_fig2_pipeline_mechanism.png)
+![Figure 2: GPipe 流水线并行机制——将模型分层放置到 K 个加速器，将 mini-batch 拆分为 M 个 micro-batch，流水线执行以实现接近线性的加速比](../../images/gpipe/gpipe_fig2_pipeline_mechanism.png)
 
 1. 将网络表示为一个层序列，按计算代价均匀分割到 K 个 cell，每个 cell 放在一个加速器上
 2. 将大小为 N 的 mini-batch 分为 M 个等大的 micro-batch
@@ -44,7 +44,7 @@ GPipe 的核心是 **batch-splitting pipeline parallelism**：
 4. 反向：对每个 micro-batch 计算梯度时使用前向时的相同参数
 5. 梯度累积：mini-batch 结束后，所有 micro-batch 的梯度累加，同步更新参数
 
-![Figure 2c: Pipeline timing diagram——展示 micro-batch 在 K=4 个加速器上的流水线执行时间线，以及气泡开销](../images/gpipe/gpipe_fig2c_figure.png)
+![Figure 2c: Pipeline timing diagram——展示 micro-batch 在 K=4 个加速器上的流水线执行时间线，以及气泡开销](../../images/gpipe/gpipe_fig2c_figure.png)
 
 梯度累积带来 **同步梯度更新**——无论分区数多少，梯度更新保持一致，训练稳定且可重复。
 
@@ -85,7 +85,7 @@ GPipe 的核心是 **batch-splitting pipeline parallelism**：
 
 **Multilingual NMT（6B 参数 Transformer, 103 语言 → 英语）：**
 
-![Figure 3: 随模型容量增加的翻译质量——从 400M 到 6B 参数量，所有语言都有提升，低资源语言提升尤为显著](../images/gpipe/gpipe_fig3_translation_quality_across.png)
+![Figure 3: 随模型容量增加的翻译质量——从 400M 到 6B 参数量，所有语言都有提升，低资源语言提升尤为显著](../../images/gpipe/gpipe_fig3_translation_quality_across.png)
 
 - 训练 6B 参数、128 层 Transformer：T(64, 16384, 32)，分 16 个分区
 - 首次证明一个 NMT 模型可同时学习 100+ 语言对，且**在所有语言上超越各自的双语 baseline**

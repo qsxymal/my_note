@@ -27,7 +27,7 @@ tags: [quantization, llm, efficiency, inference, w8a8]
 
 大模型规模增长远超 GPU 内存增速（Figure 1），FP16 推理需要大量 GPU，成本高昂。量化可将权重和激活从 FP16 降到 INT8，理论上内存减半、吞吐翻倍。
 
-![Figure 1: 大模型规模 vs GPU 内存——量化是弥合供需差距的关键手段](../images/smoothquant/smoothquant_fig1_precision_mapping_transformer.png)
+![Figure 1: 大模型规模 vs GPU 内存——量化是弥合供需差距的关键手段](../../images/smoothquant/smoothquant_fig1_precision_mapping_transformer.png)
 
 [[llm.int8-8-bit-matrix-multiplication-for-transformers-at-scale|LLM.int8()]] 首次实现了 175B 模型的 8-bit 推理且精度无损，但它的 mixed-precision decomposition（outlier 用 FP16 计算，其余用 INT8）在 GPU 上实现效率低——每次矩阵乘法都需要分解、分别计算、再拼接，无法充分利用 Tensor Core 的纯 INT8 GEMM 内核。业界需要的是一种 **纯 W8A8** 方案，才能在不依赖混合精度的前提下真正提升吞吐。
 
@@ -39,7 +39,7 @@ SmoothQuant 的关键洞察：不绕开 outlier，而是通过数学等价变换
 
 **核心直觉：** 权重分布平坦均匀、易于量化；激活有 outlier、难以量化。如果通过 per-channel smoothing factor s 对激活做缩放、同时对权重做反向缩放，可以在保持数学等价的前提下，将激活的量化难度**迁移**到权重上（Figure 2）。
 
-![Figure 2: SmoothQuant 核心直觉——激活因 outlier 难量化（有效 quantization level 极低），平滑后激活和权重都易于量化](../images/smoothquant/smoothquant_fig2_suitable_migration_strength.png)
+![Figure 2: SmoothQuant 核心直觉——激活因 outlier 难量化（有效 quantization level 极低），平滑后激活和权重都易于量化](../../images/smoothquant/smoothquant_fig2_suitable_migration_strength.png)
 
 具体而言，对线性层 $Y = X \cdot W$，引入平滑变换：
 
@@ -51,7 +51,7 @@ $$Y = (X \cdot \text{diag}(s)^{-1}) \cdot (\text{diag}(s) \cdot W) = \hat{X} \cd
 2. **同一 channel 内方差小**——outlier 固定出现在某些 channel，且 token 间幅值变化不大
 3. **Outlier 持续存在于固定 channel**——这为 offline 估计 smoothing factor 提供了基础
 
-![Figure 4: OPT-13B 线性层激活与权重幅值——平滑前激活存在高幅值 outlier（>70），平滑后 outlier 被显著抑制，权重仍保持平坦](../images/smoothquant/smoothquant_fig4_magnitude_evidence.png)
+![Figure 4: OPT-13B 线性层激活与权重幅值——平滑前激活存在高幅值 outlier（>70），平滑后 outlier 被显著抑制，权重仍保持平坦](../../images/smoothquant/smoothquant_fig4_magnitude_evidence.png)
 
 **迁移强度 α** 控制在激活和权重之间的难度分配：
 
@@ -67,14 +67,14 @@ $$s_j = \max(|X_j|)^\alpha / \max(|W_j|)^{(1-\alpha)}$$
 
 **为何需要 SmoothQuant？——量化方案的硬件约束。** 论文首先厘清了不同量化方案的定义及其硬件兼容性（Figure 3）：per-tensor 效率最高但精度差，per-token + per-channel 精度高但需要从外维度（T、Co）缩放以兼容 INT8 GEMM 内核，无法对内维度（Ci）做 per-channel 量化。SmoothQuant 正是在这个约束下设计解决方案。
 
-![Figure 3: Per-tensor vs per-token+per-channel 量化定义——只有外维度（T, Co）缩放兼容 INT8 GEMM 内核](../images/smoothquant/smoothquant_fig3_quant_schemes.png)
+![Figure 3: Per-tensor vs per-token+per-channel 量化定义——只有外维度（T, Co）缩放兼容 INT8 GEMM 内核](../../images/smoothquant/smoothquant_fig3_quant_schemes.png)
 
 **Smoothing factor 的计算与融合（Figure 5）：**
 - 从预训练数据取 512 条样本离线校准，计算 per-channel 的 max(|X_j|) 和 max(|W_j|)
 - 根据 α 公式计算 s_j
 - 将 $\text{diag}(s)^{-1}$ **融合到前一层参数**（LayerNorm 或前一个 Linear 的权重）中，推理时**零额外计算开销**
 
-![Figure 5: SmoothQuant 主流程（α=0.5）——离线计算 smoothing factor 并融合到前一层参数，推理时激活已平滑](../images/smoothquant/smoothquant_fig5_smoothing_factor.png)
+![Figure 5: SmoothQuant 主流程（α=0.5）——离线计算 smoothing factor 并融合到前一层参数，推理时激活已平滑](../../images/smoothquant/smoothquant_fig5_smoothing_factor.png)
 
 **三档效率-精度权衡（O1/O2/O3）：**
 
@@ -86,13 +86,13 @@ $$s_j = \max(|X_j|)^\alpha / \max(|W_j|)^{(1-\alpha)}$$
 
 **Transformer 块的精度映射（Figure 6）：** 量化所有 Linear 层和 Attention 中的 BMM 为 INT8，保留 Softmax、LayerNorm 等轻量操作为 FP16。
 
-![Figure 6: SmoothQuant 在 Transformer 块中的精度映射——INT8 用于计算密集型算子，FP16 保留轻量算子](../images/smoothquant/smoothquant_fig6_precision_mapping.png)
+![Figure 6: SmoothQuant 在 Transformer 块中的精度映射——INT8 用于计算密集型算子，FP16 保留轻量算子](../../images/smoothquant/smoothquant_fig6_precision_mapping.png)
 
 ### 4. Experiments & Results
 
 **OPT-175B 零样本精度（Table 3）：** SmoothQuant 三档配置均匹配 FP16 精度（~66.8%），而 Naive W8A8、ZeroQuant 和 Outlier Suppression 几乎退化为随机结果（~35%）。LLM.int8() 精度虽好，但混合精度分解导致延迟更高。
 
-![Table 3: OPT-175B 零样本精度——SmoothQuant-O3 仅降 0.1% 精度，SmoothQuant-O1/O2 完全无损](../images/smoothquant/smoothquant_table3_results.png)
+![Table 3: OPT-175B 零样本精度——SmoothQuant-O3 仅降 0.1% 精度，SmoothQuant-O1/O2 完全无损](../../images/smoothquant/smoothquant_table3_results.png)
 
 | 方法 | 平均精度 | WikiText ↓ |
 |------|---------|-----------|
@@ -123,7 +123,7 @@ $$s_j = \max(|X_j|)^\alpha / \max(|W_j|)^{(1-\alpha)}$$
 
 **关于 α 的权衡（Figure 10）：** α 过小则激活仍难量化，过大则权重量化误差大，论文通过实验确认了 "sweet spot"（OPT/BLOOM 为 0.5，GLM 为 0.75，LLaMA 为 0.8）。
 
-![Figure 10: 迁移强度 α 的 sweet spot——过小激活难量化，过大权重量化误差大](../images/smoothquant/smoothquant_fig10_alpha_sweetspot.png)
+![Figure 10: 迁移强度 α 的 sweet spot——过小激活难量化，过大权重量化误差大](../../images/smoothquant/smoothquant_fig10_alpha_sweetspot.png)
 
 **我的判断：**
 - 这是对 LLM.int8() 非常漂亮的改进——用简单的数学变换绕过了 hardware 不友好的 mixed-precision 分解

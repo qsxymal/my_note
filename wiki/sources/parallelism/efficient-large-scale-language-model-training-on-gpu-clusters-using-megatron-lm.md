@@ -35,7 +35,7 @@ tags: [distributed-training, pipeline-parallelism, tensor-parallelism, megatron,
 
 ### 2. High-Level Method
 
-![Figure 2: PTD-P 组合——pipeline parallelism 跨节点、tensor parallelism 节点内、data parallelism 跨副本](../images/megatron-cluster/meg_cluster_fig2_ptdp_combination.png)
+![Figure 2: PTD-P 组合——pipeline parallelism 跨节点、tensor parallelism 节点内、data parallelism 跨副本](../../images/megatron-cluster/meg_cluster_fig2_ptdp_combination.png)
 * Gpipe：所有前向计算完成，再开始反向计算
 * 1F1B：前反向可以交替进行，反向完成后可以释放一些空间，内存更优优势
 * interleave 1F1B：一个设备负载v个stage，mini-batch可以支持更小，bubble更小。当前的方案。
@@ -51,7 +51,7 @@ tags: [distributed-training, pipeline-parallelism, tensor-parallelism, megatron,
 
 标准的 1F1B schedule 中，每个设备分配 $\frac{L}{p}$ 层。Interleaved schedule 将每层进一步拆分，每个设备负责 $\frac{L}{p}$ 个层集合，每个集合有 $\frac{p}{v}$ 层（$v$ 为 interleave 因子）。
 
-![Figure 4: 1F1B（上）vs Interleaved 1F1B（下）流水线调度对比——Interleaved schedule 将空闲减少 v 倍](../images/megatron-cluster/meg_cluster_fig4_interleaved_schedule.png)
+![Figure 4: 1F1B（上）vs Interleaved 1F1B（下）流水线调度对比——Interleaved schedule 将空闲减少 v 倍](../../images/megatron-cluster/meg_cluster_fig4_interleaved_schedule.png)
 
 Bubble 占比从 $\frac{p-1}{m}$ 降至 $\frac{1}{v} \cdot \frac{p-1}{m}$。代价是通信量增加 $v$ 倍（可通过多个 InfiniBand 卡并行来缓解）。
 

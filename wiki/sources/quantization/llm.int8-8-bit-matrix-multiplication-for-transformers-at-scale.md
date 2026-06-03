@@ -33,18 +33,18 @@ tags: [quantization, llm, efficiency, inference]
 
 **核心发现：** 当 Transformer 规模达到 **6.7B 参数**时，所有层中会**相变式涌现**极端 outlier 特征（幅度是其他维度的 20 倍以上），这些 outlier 虽然只集中在约 7 个特征维度，但影响 75% 的序列维度，并且对模型性能至关重要——将它们置零会导致 perplexity 退化 600-1000%。
 
-![Figure 1: OPT 模型零样本准确率——常规 8-bit 量化在 6.7B 参数时因 outlier 涌现而失效，LLM.int8() 完整保持 16-bit 精度](../images/llm.int8/llmint8_fig1_outlier_emergence.png)
+![Figure 1: OPT 模型零样本准确率——常规 8-bit 量化在 6.7B 参数时因 outlier 涌现而失效，LLM.int8() 完整保持 16-bit 精度](../../images/llm.int8/llmint8_fig1_outlier_emergence.png)
 
 作者进一步分析了 outlier 特征幅值与 C4 perplexity 的关系（Figure 3）：outlier 在 6.7B 时涌现后，其幅度和数量随模型规模增大而增加，直接导致常规量化方法的 perplexity 急剧退化。
 
-![Figure 3: C4 perplexity vs outlier 特征幅值和数量——outlier 涌现后幅度随模型增大而增加，直接导致量化精度崩溃](../images/llm.int8/llmint8_fig3_outlier_analysis.png)
+![Figure 3: C4 perplexity vs outlier 特征幅值和数量——outlier 涌现后幅度随模型增大而增加，直接导致量化精度崩溃](../../images/llm.int8/llmint8_fig3_outlier_analysis.png)
 
 基于此发现，论文提出了 **LLM.int8()** 的两部分量化方案（Figure 2）：
 
 1. **Vector-wise quantization** — 矩阵乘法中每个内积独立使用量化归一化常数（c_x, c_w），比 per-tensor 更精确，可处理到 2.7B 规模
 2. **Mixed-precision decomposition** — 检测 outlier 特征维度（阈值 α=6.0），将其分离出来用 16-bit 计算，其余 99.9% 的值用 8-bit 计算，最后将两部分结果累加
 
-![Figure 2: LLM.int8() 流程——输入端分解 outlier 和常规值，outlier 走 FP16 matmul，常规值走 INT8 vector-wise matmul，最后累加输出](../images/llm.int8/llmint8_fig2_schematic.png)
+![Figure 2: LLM.int8() 流程——输入端分解 outlier 和常规值，outlier 走 FP16 matmul，常规值走 INT8 vector-wise matmul，最后累加输出](../../images/llm.int8/llmint8_fig2_schematic.png)
 
 ### 3. Key Implementation Details
 
@@ -66,7 +66,7 @@ tags: [quantization, llm, efficiency, inference]
 | 6.7B | 13.30 | 14.59 | 13.49 | 13.24 |
 | 13B | 12.45 | 19.08 | 13.94 | **12.45** |
 
-![LLM.int8() 全量实验结果——OPT 模型各规模在 zero-shot 评测和语言建模中的表现](../images/llm.int8/llmint8_table_results.png)
+![LLM.int8() 全量实验结果——OPT 模型各规模在 zero-shot 评测和语言建模中的表现](../../images/llm.int8/llmint8_table_results.png)
 
 - 在 OPT 125M→175B 的 zero-shot 评测（WinoGrande, HellaSwag, PIQA, LAMBADA）中，LLM.int8() **完整保持 16-bit 精度**
 - 其他方法在 6.7B+ 时退化为随机性能

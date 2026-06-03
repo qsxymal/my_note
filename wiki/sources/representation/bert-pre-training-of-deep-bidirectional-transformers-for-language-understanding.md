@@ -33,13 +33,13 @@ tags: [pre-training, language-representation, bidirectional, transformer-encoder
 
 核心问题：**现有预训练方法都是单向的**。GPT 使用 left-to-right Transformer，每个 token 只能关注左侧上下文。ELMo 虽拼接了独立训练的 left-to-right 和 right-to-left LSTM，但"双向"仅在最后一层浅层完成，并非真正的深度双向。
 
-![Figure 3: BERT vs OpenAI GPT vs ELMo 架构对比](../images/bert/bert_fig3_differences_pre_training.png)
+![Figure 3: BERT vs OpenAI GPT vs ELMo 架构对比](../../images/bert/bert_fig3_differences_pre_training.png)
 
 BERT 的关键洞察：**只有 BERT 在所有层同时条件化左右上下文**（通过 MLM），而 GPT 只能看左边，ELMo 的 LSTM 拼接并非真正联合双向。
 
 ### 2. High-Level Method
 
-![Figure 1: BERT 预训练和微调流程](../images/bert/bert_fig1_overall_pre_training.png)
+![Figure 1: BERT 预训练和微调流程](../../images/bert/bert_fig1_overall_pre_training.png)
 
 BERT 架构是 **multi-layer bidirectional Transformer encoder**（即 Transformer 的编码器部分）。两个主要规格：
 
@@ -61,7 +61,7 @@ BERT 架构是 **multi-layer bidirectional Transformer encoder**（即 Transform
 
 **输入表示：**
 
-![Figure 2: BERT 输入表示](../images/bert/bert_fig2_bert_input_representation.png)
+![Figure 2: BERT 输入表示](../../images/bert/bert_fig2_bert_input_representation.png)
 
 输入 = Token Embeddings + Segment Embeddings + Position Embeddings 之和。
 - [CLS] — 每个序列的第一个 token，其最终隐状态用于分类任务
@@ -78,13 +78,13 @@ BERT 架构是 **multi-layer bidirectional Transformer encoder**（即 Transform
 - 分类任务 → 取 [CLS] 的隐状态 + 分类层
 - 标注任务（NER、SQuAD） → 取每个 token 的隐状态 + 输出层
 
-![Figure 4: 不同任务的微调方式](../images/bert/bert_fig4_illustrations_fine_tuning.png)
+![Figure 4: 不同任务的微调方式](../../images/bert/bert_fig4_illustrations_fine_tuning.png)
 
 ### 4. Experiments & Results
 
 **GLUE 基准（8 项 NLU 任务）：**
 
-![Table 1: GLUE 结果](../images/bert/bert_table1_glue.png)
+![Table 1: GLUE 结果](../../images/bert/bert_table1_glue.png)
 
 | 模型 | Average | MNLI | QQP | QNLI | SST-2 | CoLA | STS-B | MRPC | RTE |
 |------|---------|------|-----|------|-------|------|-------|------|-----|
@@ -96,14 +96,14 @@ BERT 平均提升 7.0%（相对于此前 SOTA），在 MNLI 上绝对提升 4.6%
 
 **SQuAD 1.1（答案抽取）& SQuAD 2.0（含不可回答问题）：**
 
-![Table 2: SQuAD 1.1 结果](../images/bert/bert_table2_squad.png)
+![Table 2: SQuAD 1.1 结果](../../images/bert/bert_table2_squad.png)
 
 - SQuAD 1.1: BERT_LARGE Ensemble F1 **93.2**（+TriviaQA 数据）
 - SQuAD 2.0: BERT_LARGE Single F1 **83.1**（+5.1 超此前最佳）
 
 **消融实验：预训练任务的影响**
 
-![Table 5: 预训练任务消融](../images/bert/bert_table5_ablation_pretrain.png)
+![Table 5: 预训练任务消融](../../images/bert/bert_table5_ablation_pretrain.png)
 
 | 配置 | MNLI | QNLI | MRPC | SST-2 | SQuAD F1 |
 |------|------|------|------|-------|---------|
@@ -117,13 +117,13 @@ BERT 平均提升 7.0%（相对于此前 SOTA），在 MNLI 上绝对提升 4.6%
 
 **模型大小的影响：**
 
-![Table 6: 模型大小消融](../images/bert/bert_table6_model_size.png)
+![Table 6: 模型大小消融](../../images/bert/bert_table6_model_size.png)
 
 模型越大越好——24 层、1024 hidden、16 heads 的 BERT_LARGE 在所有任务上最优。预训练 PPL 从 5.84 (3层) 降至 3.23 (24层)，下游任务精度同步提升。这与之前研究（增大预训练模型效果有限）的发现不同——关键是 **微调范式** 让任务特定模型能从更大预训练模型中受益。
 
 **NER（特征提取 vs 微调对比）：**
 
-![Table 7: CoNLL-2003 NER 结果](../images/bert/bert_table7_ner.png)
+![Table 7: CoNLL-2003 NER 结果](../../images/bert/bert_table7_ner.png)
 
 - 微调 BERT_LARGE: **92.8** F1
 - 特征提取最佳（拼接最后 4 层）: 96.1 Dev / 匹配微调性能

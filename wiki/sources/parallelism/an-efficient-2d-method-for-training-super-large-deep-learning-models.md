@@ -31,7 +31,7 @@ Megatron-LM 的 tensor parallelism 是一维方案：参数被拆分但**每个�
 
 Optimus 的目标：将 **参数和激活值都** 分布到所有设备上，消除激活冗余。
 
-![Figure 4: Optimus 架构——MLP 和 Self-Attention 均按 SUMMA 2D 方式分块（$q \times q$ 网格），激活和参数全部分布化](../images/optimus/optimus_fig4_optimus_architecture.png)
+![Figure 4: Optimus 架构——MLP 和 Self-Attention 均按 SUMMA 2D 方式分块（$q \times q$ 网格），激活和参数全部分布化](../../images/optimus/optimus_fig4_optimus_architecture.png)
 
 ### 2. High-Level Method
 
@@ -66,9 +66,9 @@ Optimus 的 isoefficiency 显著优于 Megatron，即**在相同并行度下达�
 - **Activation checkpointing**：每层仅存 checkpointed input（分布在 2D grid 上），反向重算时用预分配的 workspace buffer
 - **内存预分配**：手动管理 forward/backward/parameter gradient 等 buffer，避免 fragmentation——最多容纳 480 batch size（Megatron 仅 60）
 
-![Figure 7: Weak/Strong scaling 效率对比——Optimus vs Megatron，64 GPU 上 Optimus 的 strong scaling 递增而 Megatron 递减](../images/optimus/optimus_fig7_scaling.png)
+![Figure 7: Weak/Strong scaling 效率对比——Optimus vs Megatron，64 GPU 上 Optimus 的 strong scaling 递增而 Megatron 递减](../../images/optimus/optimus_fig7_scaling.png)
 
-![Figure 9: Memory limits——Optimus 的 batch size 随 GPU 数上升（激活分布化），Megatron 则是下降（激活冗余）](../images/optimus/optimus_fig9_memory_limits.png)
+![Figure 9: Memory limits——Optimus 的 batch size 随 GPU 数上升（激活分布化），Megatron 则是下降（激活冗余）](../../images/optimus/optimus_fig9_memory_limits.png)
 - **Bunched GPU arrangement**：跨节点时将同一列的 GPU 尽量放在同一节点或少数节点上，减少跨节点通信
 - **LayerNorm**：分布式计算均值和方差（本地 sum 后 all-reduce 沿行）
 

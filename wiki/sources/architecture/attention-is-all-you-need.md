@@ -35,14 +35,14 @@ tags: [transformer, attention, architecture, sequence-modeling, foundation-model
 
 Transformer 遵循编码器-解码器架构，但完全由 **self-attention** 和 **position-wise FFN** 构成。
 
-![Figure 1: Transformer 模型架构](../images/transformer/transformer_fig1_transformer_model_architecture.png)
+![Figure 1: Transformer 模型架构](../../images/transformer/transformer_fig1_transformer_model_architecture.png)
 
 **编码器：** N=6 个相同层，每层包含两个子层：multi-head self-attention → position-wise FFN。每个子层后接 residual connection + layer normalization。
 
 **解码器：** N=6 个相同层，在编码器两层基础上插入第三个子层——对编码器输出做 multi-head cross-attention。解码器 self-attention 使用 **masking** 确保位置 i 只能关注 i 之前的位置（保持自回归性质）。
 
-![Figure 2: Scaled Dot-Product Attention (左) 和 Multi-Head Attention (右)](../images/transformer/transformer_fig2a_scaled_dot_product.png)
-![Figure 2: Multi-Head Attention](../images/transformer/transformer_fig2b_scaled_dot_product.png)
+![Figure 2: Scaled Dot-Product Attention (左) 和 Multi-Head Attention (右)](../../images/transformer/transformer_fig2a_scaled_dot_product.png)
+![Figure 2: Multi-Head Attention](../../images/transformer/transformer_fig2b_scaled_dot_product.png)
 
 **Scaled Dot-Product Attention:**
 $$
@@ -90,13 +90,13 @@ $$
 
 **为什么 Self-Attention 优于 RNN 和 CNN：**
 
-![Table 1: 各层类型复杂度对比](../images/transformer/transformer_table1_complexity.png)
+![Table 1: 各层类型复杂度对比](../../images/transformer/transformer_table1_complexity.png)
 
 Self-attention 每层复杂度 O(n²·d)，但最大路径长度仅为 O(1)——意味着任意两个位置之间只需要常数步就能建立依赖。RNN 需要 O(n) 步，CNN 需要 O(log_k(n))。当序列长度 n 小于表示维度 d 时（机器翻译中通常如此），self-attention 在计算上也是高效的。
 
 **机器翻译主结果：**
 
-![Table 2: 翻译 BLEU 分数与训练成本对比](../images/transformer/transformer_table2_translation_results.png)
+![Table 2: 翻译 BLEU 分数与训练成本对比](../../images/transformer/transformer_table2_translation_results.png)
 
 | 模型 | EN-DE BLEU | EN-FR BLEU | 训练成本 (FLOPs) |
 |------|-----------|-----------|-----------------|
@@ -108,7 +108,7 @@ Transformer (big) 在 EN-DE 上超此前最佳集成 2 BLEU，训练成本仅为
 
 **模型消融实验：**
 
-![Table 3: 架构变体与消融](../images/transformer/transformer_table3_model_variations.png)
+![Table 3: 架构变体与消融](../../images/transformer/transformer_table3_model_variations.png)
 
 关键发现：
 - (A) 多头注意力数量：h=8 最优，单头低 0.9 BLEU，头过多质量也下降
@@ -119,7 +119,7 @@ Transformer (big) 在 EN-DE 上超此前最佳集成 2 BLEU，训练成本仅为
 
 **成分句法分析（泛化能力验证）：**
 
-![Table 4: 成分句法分析结果](../images/transformer/transformer_table4_parsing.png)
+![Table 4: 成分句法分析结果](../../images/transformer/transformer_table4_parsing.png)
 
 在仅 40K 训练句子的 WSJ 上取得 91.3 F1，半监督设置下 92.7 F1，超越了除 RNN Grammar 外所有此前方法。证明了 Transformer **无需针对任务特定调整**即可迁移到其他序列任务。
 

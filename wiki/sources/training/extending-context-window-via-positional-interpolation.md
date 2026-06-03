@@ -26,7 +26,7 @@ tags: [position-encoding, context-window, length-extension, rope, llama]
 
 ### 1. Background & Motivation
 
-![Figure 1: Interpolation method](../images/positional-interpolation/pi_fig1_effective_context_window.png)
+![Figure 1: Interpolation method](../../images/positional-interpolation/pi_fig1_effective_context_window.png)
 
 RoPE-based LLM（如 LLaMA）的上下文窗口固定为 2048 tokens，直接超出预训练范围使用时 perplexity 会飙升到 >10³（相当于未训练模型）。直接 fine-tuning 扩展也极其低效——训练 10000+ steps 后有效窗口仅从 2048 增加到 2560。
 
@@ -42,7 +42,7 @@ $$f'(x, m) = f(x, m/\lambda), \quad \lambda = L' / L$$
 
 **为什么 interpolation 优于 extrapolation（Figure 2 的核心发现）：**
 
-![Figure 2: Extrapolation vs Interpolation](../images/positional-interpolation/pi_fig2_illustration_position_interpolation.png)
+![Figure 2: Extrapolation vs Interpolation](../../images/positional-interpolation/pi_fig2_illustration_position_interpolation.png)
 
 左图：随机拟合的 attention score 函数在 [0, 2048] 内表现良好，但在区间外出界到 8000+。
 右图：Interpolation 保证 query-key 位置差 s 始终在相邻整数 grid 之间，函数值平滑有界。
@@ -57,7 +57,7 @@ $$|a(s) - a_{\text{linear}}(s)| \leq \frac{1}{8} \max_{j} |h_j| \cdot \frac{\pi^
 
 **长序列语言建模（PG-19）：**
 
-![Table 1: PG-19 Perplexity](../images/positional-interpolation/pi_table1_pg19_perplexity.png)
+![Table 1: PG-19 Perplexity](../../images/positional-interpolation/pi_table1_pg19_perplexity.png)
 
 | 模型 | 扩展方法 | 2048 | 4096 | 8192 | 16384 | 32768 |
 |:---|:--------:|:---:|:---:|:---:|:---:|:---:|
@@ -71,19 +71,19 @@ PI 扩展的模型 perplexity 随窗口增大持续降低，而直接 FT 随窗�
 
 **有效上下文窗口（Passkey Retrieval）：**
 
-![Table 4: Effective context window](../images/positional-interpolation/pi_table4_effective_window.png)
+![Table 4: Effective context window](../../images/positional-interpolation/pi_table4_effective_window.png)
 
 PI 仅需 200 steps fine-tuning 即可达到目标窗口大小（8192→8192, 16384→16384, 32768→32768），而直接 FT 即使 10000 steps 也仅从 2048 增至 2560。
 
 **零样本基准（原始窗口内任务）：**
 
-![Table 5: Zero-shot benchmarks](../images/positional-interpolation/pi_table5_zeroshot_benchmarks.png)
+![Table 5: Zero-shot benchmarks](../../images/positional-interpolation/pi_table5_zeroshot_benchmarks.png)
 
 PI 扩展至 8192 的模型在原始 2048 窗口内任务上退化 ≤2%（BoolQ 退化最多，因 BoolQ 要求精确关注短参考段落中的词序）。
 
 **长文档摘要：**
 
-![Table 6: GovReport ROUGE](../images/positional-interpolation/pi_table6_govreport_rouge.png)
+![Table 6: GovReport ROUGE](../../images/positional-interpolation/pi_table6_govreport_rouge.png)
 
 16K 扩展模型的 ROUGE-1 60.0，与 CoLT5 XL（61.3）差距不大，且 PI 方法不改变注意力机制。
 

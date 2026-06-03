@@ -44,6 +44,17 @@
 | `gptq/gptq_fig_speedup.png` | GPTQ 4-bit 推理加速比与 175B 模型单卡部署 |
 | `gptq/gptq_table_results.png` | 跨模型量化精度对比 |
 
+## KVQuant
+
+| File | Description |
+|------|-------------|
+| `kvquant/kvquant_fig1a_model_size_versus.png` | KV cache vs 权重的内存占比分解——短序列 vs 长序列 |
+| `kvquant/kvquant_fig1b_model_size_versus.png` | KVQuant 各技术组件的逐步 perplexity 改善 |
+| `kvquant/kvquant_fig2_example_distributions_activation.png` | Key pre-RoPE / post-RoPE / Value 激活分布对比 |
+| `kvquant/kvquant_fig3_perplexity_results_llama.png` | 不同序列长度下的 perplexity 结果 |
+| `kvquant/kvquant_fig4_distribution_magnitude_elements.png` | Key 和 Value activation 各层幅值分布 |
+| `kvquant/kvquant_fig5_one_typically_achieves.png` | 离线 vs 在线校准策略分析 |
+
 ## Block-Attention
 
 | File | Description |
@@ -209,6 +220,59 @@
 | `activation/activation_fig8_perf_breakdown.png` | 各规模模型前向/反向/重算时间分解 |
 | `activation/activation_fig9_pipeline_memory_opt.png` | Pipeline parallelism 下各 stage 的激活内存优化
 
+## FlashInfer
+
+| File | Description |
+|------|-------------|
+| `flashinfer/flashinfer_fig1_overview_system_design.png` | FlashInfer 系统设计总览：JIT 编译 + 运行时调度 |
+| `flashinfer/flashinfer_fig2_representation_page_bsr.png` | Page Table 在 BSR 格式下的统一表示 |
+| `flashinfer/flashinfer_fig3_composable_formats_shared.png` | Composable formats 共享前缀分解示意图 |
+| `flashinfer/flashinfer_fig4_data_transfer_global.png` | Global 到 shared memory 的稀疏/稠密数据传输 |
+| `flashinfer/flashinfer_fig5_jit_compiler_attention.png` | JIT 编译器架构与 attention 变体模板 |
+| `flashinfer/flashinfer_fig6_load_balanced_runtime.png` | 负载均衡运行时调度器工作流 |
+| `flashinfer/flashinfer_fig7a_medium_inter_token.png` | SGLang ITL 主实验结果 |
+| `flashinfer/flashinfer_fig7b_medium_inter_token.png` | SGLang TTFT 主实验结果 |
+| `flashinfer/flashinfer_fig8a_achieved_bandwidth_flops.png` | Decode 带宽利用率对比 |
+| `flashinfer/flashinfer_fig8b_achieved_bandwidth_flops.png` | Prefill FLOPs 利用率对比 |
+| `flashinfer/flashinfer_fig9a_end_end_latency.png` | StreamingLLM 端到端延迟 |
+| `flashinfer/flashinfer_fig9b_end_end_latency.png` | Fused RoPE kernel 带宽利用率 |
+| `flashinfer/flashinfer_fig10a_itl_ttft_mlc.png` | Composable formats 在 MLC-Engine 上的 ITL 加速 |
+| `flashinfer/flashinfer_fig10b_itl_ttft_mlc.png` | Composable formats 在 MLC-Engine 上的 TTFT 加速 |
+| `flashinfer/flashinfer_fig11_head_group_fusion.png` | GQA head-group fusion 融合策略 |
+| `flashinfer/flashinfer_fig12a_achieved_tflops_prefill.png` | Sparse/dense prefill TFLOPs 对比 |
+| `flashinfer/flashinfer_fig12b_achieved_tflops_prefill.png` | Sparse/dense decode 带宽利用率 |
+
+## Gated Convolutional (GCNN)
+
+| File | Description |
+|------|-------------|
+| `gated-convolutional/gated-conv_fig1_architecture_gated_convolutional.png` | GCNN 架构图——embedding + 堆叠门控卷积 + adaptive softmax |
+| `gated-convolutional/gated-conv_fig2_comparison_state_art.png` | 计算量 vs 困惑度——GCNN + AdaSoftmax ops/ppl 效率远高于 LSTM+Full Softmax |
+| `gated-convolutional/gated-conv_fig3a_learning_curves_wikitext.png` | WikiText-103 学习曲线——GLU 收敛最快、困惑度最低 |
+| `gated-convolutional/gated-conv_fig3b_learning_curves_wikitext.png` | Google Billion Word 100 小时学习曲线——GLU 比 GTU/ReLU 低 ~5 ppl |
+| `gated-convolutional/gated-conv_fig4a_test_perplexity_function.png` | Google Billion Word 困惑度 vs 上下文长度——>20 token 后收益递减 |
+| `gated-convolutional/gated-conv_fig4b_test_perplexity_function.png` | WikiText-103 困惑度 vs 上下文长度——~30 token 已足够 |
+| `gated-convolutional/gated-conv_fig5_learning_curves_google.png` | 不同非线性程度模型的 Google Billion Word 学习曲线 |
+| `gated-convolutional/gated-conv_fig6_effect_weight_normalization.png` | WeightNorm + Gradient Clipping 的收敛加速效果——学习率可从 0.01 提升至 1.0 |
+
+## Gated DeltaNet
+
+| File | Description |
+|------|-------------|
+| `gated-delta-networks/gated-delta_fig1_architecture.png` | Gated DeltaNet 架构和 block 设计——Hybrid 层间布局 + Gated Delta Rule 内部流程（Linear/Conv/SiLU/L2 Norm）|
+| `gated-delta-networks/gated-delta_fig2_length_extrapolation.png` | 6 个长文本基准上的长度外推 perplexity——Gated DeltaNet 在纯循环模型中最低 |
+| `gated-delta-networks/gated-delta_fig3_throughput.png` | 1.3B 模型在单 H100 上的训练吞吐量对比——Gated DeltaNet 与 DeltaNet 几乎相同 |
+
+## Linear Fast Weight (DeltaNet)
+
+| File | Description |
+|------|-------------|
+| `linear-fast-weight/linear-fwp_fig1_visualisation_dpfp_space.png` | DPFP 可视化——2d 平面 → 4d 颜色曲面，四个象限各激活一个正交分量 |
+| `linear-fast-weight/linear-fwp_fig2_final_evaluation_loss.png` | 容量测试——超过 d_dot 后线性注意力检索误差骤升，softmax 不受限 |
+| `linear-fast-weight/linear-fwp_fig3_learning_curves_different.png` | Delta rule vs sum rule 在关联检索任务上的学习曲线——delta ~20 epoch 收敛 |
+| `linear-fast-weight/linear-fwp_fig4_training_curves_setting.png` | Setting 1 中 600 个关联的训练曲线 |
+| `linear-fast-weight/linear-fwp_fig5_final_evaluation_loss.png` | Setting 2（有替换采样）不同更新规则最终损失对比——delta rule 最优 |
+
 ## Positional Interpolation
 
 | File | Description |
@@ -220,3 +284,60 @@
 | `positional-interpolation/pi_table4_effective_window.png` | Passkey retrieval 有效上下文窗口对比 |
 | `positional-interpolation/pi_table5_zeroshot_benchmarks.png` | 原始窗口内零样本基准任务结果 |
 | `positional-interpolation/pi_table6_govreport_rouge.png` | GovReport 长文档摘要 ROUGE 分数 |
+
+## Dynamic Tanh (DyT) — Transformers without Normalization
+
+| File | Description |
+|------|-------------|
+| `transformers-without-normalization/no-norm_fig1_original_transformer_block.png` | DyT 替换 LN 的架构对比——左：原版 Transformer block，右：DyT block |
+| `transformers-without-normalization/no-norm_fig2a_output_input_selected.png` | ViT LN 层的输入-输出 S 形映射——与 tanh 高度相似 |
+| `transformers-without-normalization/no-norm_fig2b_output_input_selected.png` | wav2vec 2.0 LN 层的 S 形映射 |
+| `transformers-without-normalization/no-norm_fig2c_output_input_selected.png` | DiT LN 层的 S 形映射 |
+| `transformers-without-normalization/no-norm_fig3_three_different_values.png` | tanh(αx) 在不同 α 下的三种曲线形态 |
+| `transformers-without-normalization/no-norm_fig4_output_input_two.png` | token/channel 分组下 LN 映射的可视化——per-token 线性 + collective S 形 |
+| `transformers-without-normalization/no-norm_fig6a_training_loss_curves.png` | ViT-B 训练 loss——LN vs DyT 几乎重合 |
+| `transformers-without-normalization/no-norm_fig6b_training_loss_curves.png` | ConvNeXt-B 训练 loss——LN vs DyT 几乎重合 |
+| `transformers-without-normalization/no-norm_fig7a_llama_pretraining_loss.png` | LLaMA 7B 预训练 loss——DyT vs RMSNorm 一致 |
+| `transformers-without-normalization/no-norm_fig7b_llama_pretraining_loss.png` | LLaMA 13B 预训练 loss——DyT vs RMSNorm 一致 |
+| `transformers-without-normalization/no-norm_fig7c_llama_pretraining_loss.png` | LLaMA 34B 预训练 loss——DyT vs RMSNorm 一致 |
+| `transformers-without-normalization/no-norm_fig7d_llama_pretraining_loss.png` | LLaMA 70B 预训练 loss——DyT vs RMSNorm 一致 |
+| `transformers-without-normalization/no-norm_fig8b_curves_three_squashing.png` | α 训练中追踪 1/std——自动学习缩放范围 |
+| `transformers-without-normalization/no-norm_fig9_performance_different_tasks.png` | 不同 α₀ 对各任务性能的影响——大范围稳定 |
+
+## ALiBi (Attention with Linear Biases)
+
+| File | Description |
+|------|-------------|
+| `alibi-attention/alibi_fig1a_extrapolation_input_sequence.png` | L=512 训练各位置编码外推 perplexity——ALiBi 持续改善，sinusoidal/rotary 爆炸 |
+| `alibi-attention/alibi_fig1b_extrapolation_input_sequence.png` | L=1024 训练相同对比 |
+| `alibi-attention/alibi_fig2a_comparison_batched_training.png` | 训练速度对比——ALiBi 与 Sinusoidal 接近，T5 Bias 显著更慢 |
+| `alibi-attention/alibi_fig2b_comparison_batched_training.png` | 推理速度对比——ALiBi 与 Sinusoidal 几乎相同 |
+| `alibi-attention/alibi_fig2c_comparison_batched_training.png` | 训练内存对比——ALiBi 仅增加 ~100MB（n×L×L bias） |
+| `alibi-attention/alibi_fig3_when_computing_attention.png` | ALiBi 核心机制：query-key dot product 后加线性 bias（右图），softmax 前 |
+
+## Attention Visualization
+
+| File | Description |
+|------|-------------|
+| `attention-visualization/attn-viz_fig1a_attention_head_view.png` | GPT-2 注意力头视图（三种 attention 模式） |
+| `attention-visualization/attn-viz_fig1b_attention_head_view.png` | BERT 注意力头视图（sentence-pair 过滤） |
+| `attention-visualization/attn-viz_fig2_examples_attention_heads.png` | GPT-2 中特定词法模式 head 示例 |
+| `attention-visualization/attn-viz_fig3_attention_pattern_gpt.png` | 指代消解 attention 中的性别偏差 |
+| `attention-visualization/attn-viz_fig4_model_view_gpt.png` | GPT-2 模型视图（small multiples） |
+| `attention-visualization/attn-viz_fig5_neuron_view_gpt.png` | 第 8 层第 6 头神经元视图 |
+| `attention-visualization/attn-viz_fig6_neuron_view_gpt.png` | 第 1 层第 10 头距离衰减 attention 模式 |
+| `alibi-attention/alibi_fig4_models_trained_evaluated.png` | WikiText-103 主结果——所有训练长度的 ALiBi 均优于 Sinusoidal |
+| `alibi-attention/alibi_fig5a_1_parameter_alibi.png` | 1.3B ALiBi L=512 训练 vs Sinusoidal L=1024 训练的外推对比 |
+| `alibi-attention/alibi_fig5b_1_parameter_alibi.png` | 1.3B ALiBi L=1024 训练 vs Sinusoidal L=2048 训练的外推对比 |
+
+## Layer Normalization in Transformer (Post-LN / Pre-LN)
+
+| File | Description |
+|------|-------------|
+| `layer-normalization-transformer/layernorm-transformer_fig1_post_transformer_layer.png` | Post-LN vs Pre-LN 架构对比——LN 放在 residual block 内/外的位置差异 |
+| `layer-normalization-transformer/layernorm-transformer_fig2a_performances_models_optimized.png` | Adam 优化下 Post-LN/Pre-LN 在不同 warmup 策略的 loss/BLEU 对比 |
+| `layer-normalization-transformer/layernorm-transformer_fig2b_performances_models_optimized.png` | SGD 优化下 Post-LN/Pre-LN 在不同 warmup 策略的 loss/BLEU 对比 |
+| `layer-normalization-transformer/layernorm-transformer_fig3a_norm_gradients_1.png` | Post-LN 各层梯度范数——输出层极大（~10²），随层 index 衰减 |
+| `layer-normalization-transformer/layernorm-transformer_fig3b_norm_gradients_1.png` | Pre-LN 各层梯度范数——小且均匀（~10⁻¹），不随深度变化 |
+| `layer-normalization-transformer/layernorm-transformer_fig4a_performances_models_iwslt14.png` | IWSLT14 De-En 翻译 loss 曲线——Pre-LN 收敛更快 |
+| `layer-normalization-transformer/layernorm-transformer_fig5a_performances_models_unsupervised.png` | BERT 预训练 MLM accuracy——Pre-LN 更快且最终更好 |

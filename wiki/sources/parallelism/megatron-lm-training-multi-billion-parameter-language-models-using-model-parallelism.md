@@ -37,7 +37,7 @@ Megatron-LM 的定位：**简单、高效的 intra-layer model parallelism**（t
 
 核心思路：利用 Transformer 多头注意力和 MLP 的固有结构，将矩阵乘法按列/行拆分到多 GPU。
 
-![Figure 1: Megatron-LM 模型并行 + 数据并行的弱扩展 FLOPS——8-way 模型并行 + 64-way 数据并行在 512 GPU 上达到 76% 扩展效率](../images/megatron-lm/megatron_fig1_scaling.png)
+![Figure 1: Megatron-LM 模型并行 + 数据并行的弱扩展 FLOPS——8-way 模型并行 + 64-way 数据并行在 512 GPU 上达到 76% 扩展效率](../../images/megatron-lm/megatron_fig1_scaling.png)
 
 **MLP 块并行（Figure 3a）：**
 
@@ -101,7 +101,7 @@ class f(torch.autograd.Function):
 
 原始 BERT 架构在增大到 1.3B 时出现精度退化。Megatron 发现 **LayerNorm 放置位置**是关键：将 LayerNorm 放在 residual 分支之前（Pre-LN）而非之后（Post-LN），可稳定训练并使精度随模型规模提升而单调上升。
 
-![Figure 7: BERT LayerNorm 位置对训练稳定性的影响——Pre-LN（b）消除了训练不稳定，loss 更低](../images/megatron-lm/megatron_fig7_bert_layernorm.png)
+![Figure 7: BERT LayerNorm 位置对训练稳定性的影响——Pre-LN（b）消除了训练不稳定，loss 更低](../../images/megatron-lm/megatron_fig7_bert_layernorm.png)
 
 | 模型 | MNLI | QQP | SQuAD 1.1 F1 | SQuAD 2.0 F1 | RACE |
 |------|------|-----|-------------|-------------|------|

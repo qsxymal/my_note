@@ -33,7 +33,7 @@ GPT 系列模型规模巨大（175B 参数），推理成本极高。此前量�
 
 GPTQ 是 **OBQ（Optimal Brain Quantizer）在大模型上的高效扩展**。OBQ 是一种基于最优脑损伤（Optimal Brain Damage）框架的逐权重量化方法：逐个量化权重，并动态调整剩余权重以补偿量化误差。
 
-![Figure 1: OBQ 到 GPTQ——逐列量化权重，并用 Hessian 信息更新剩余列以补偿误差](../images/gptq/gptq_fig1a_quantizing_opt_models.png)
+![Figure 1: OBQ 到 GPTQ——逐列量化权重，并用 Hessian 信息更新剩余列以补偿误差](../../images/gptq/gptq_fig1a_quantizing_opt_models.png)
 
 数学上，GPTQ 使用 Hessian 矩阵 $H = 2XX^T$（$X$ 为校准数据的激活）来量化每列权重。量化第 $i$ 列时：
 1. 找到最优量化值 $q_i = \text{quant}(w_i)$
@@ -58,7 +58,7 @@ GPTQ 是 **OBQ（Optimal Brain Quantizer）在大模型上的高效扩展**。OB
 
 完整的 GPTQ 量化流程如图，通过 Hessian 逆矩阵的 Cholesky 分解实现高效的批量列更新。
 
-![GPTQ 算法流程与 OBQ 对比——Cholesky 预处理 + 懒惰批量更新将复杂度降至 GPT 规模可行](../images/gptq/gptq_fig_ablation.png)
+![GPTQ 算法流程与 OBQ 对比——Cholesky 预处理 + 懒惰批量更新将复杂度降至 GPT 规模可行](../../images/gptq/gptq_fig_ablation.png)
 
 ### 4. Experiments & Results
 
@@ -76,7 +76,7 @@ GPTQ 是 **OBQ（Optimal Brain Quantizer）在大模型上的高效扩展**。OB
 - NVIDIA A6000: **4.5×** 加速
 - 首次将 175B 模型放入**单张 A100-80G** 进行生成式推理
 
-![GPTQ 加速比与 OPT-175B 单卡推理——A100 上 4-bit 达 3.25× 加速](../images/gptq/gptq_fig_speedup.png)
+![GPTQ 加速比与 OPT-175B 单卡推理——A100 上 4-bit 达 3.25× 加速](../../images/gptq/gptq_fig_speedup.png)
 
 **跨模型验证：**
 

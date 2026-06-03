@@ -29,7 +29,7 @@ tags: [quantization, llm, weight-only, w4a16, on-device]
 
 作者对端侧 LLM 推理做了瓶颈分析（Figure 3）：生成阶段（generation stage）受限于显存带宽（arithmetic intensity ≈ 1），而权重的访存量比激活大 1-2 个数量级。因此，**weight-only 4-bit 量化**（W4A16）对端侧部署更为关键——它直接减少权重访存 4 倍，将 arithmetic intensity 提升到 4。
 
-![Figure 3: Llama-2-7B 在 RTX 4090 上的瓶颈分析——生成阶段 memory-bound，权重访存占主导，W4A16 可将 arithmetic intensity 提升 4×](../images/awq/awq_fig3_bottleneck.png)
+![Figure 3: Llama-2-7B 在 RTX 4090 上的瓶颈分析——生成阶段 memory-bound，权重访存占主导，W4A16 可将 arithmetic intensity 提升 4×](../../images/awq/awq_fig3_bottleneck.png)
 
 关键区分：AWQ 是 **weight-only 4-bit 量化**（不是 W8A8）。它不需要 backpropagation 或重建，泛化性更好。
 
@@ -37,7 +37,7 @@ tags: [quantization, llm, weight-only, w4a16, on-device]
 
 **核心发现：** 并非所有权重都同等重要。仅保护 ~1% 的 salient weight channels 就能大幅降低量化误差。识别 salient channels 的关键在于看**激活分布**，而不是权重本身的数值大小（Table 1）：基于激活分布选择 1% 的 FP16 权重可将 OPT-6.7B 的 perplexity 从 23.54 降到 11.39，而基于权重分布或随机选择则几乎没有效果。
 
-![Figure 2: 基于激活分布识别 ~1% salient weights——mixed-precision 硬件效率低，AWQ 通过 scaling 变换实现等效保护](../images/awq/awq_fig2_salient_weights.png)
+![Figure 2: 基于激活分布识别 ~1% salient weights——mixed-precision 硬件效率低，AWQ 通过 scaling 变换实现等效保护](../../images/awq/awq_fig2_salient_weights.png)
 
 为什么不用 mixed-precision（Figure 2 中间子图）？混合精度在硬件上效率低——salient 和 non-salient 权重需要不同的量化路径。AWQ 通过数学等价的 scaling 变换来实现"软保护"（Figure 2 右子图）：将 salient channels 的权重值放大 s > 1，使它们在统一精度下保留更多信息，同时对激活做反向缩放以保持数学等价性。
 
@@ -53,7 +53,7 @@ $$s^* = \arg\min_s \| Q(W \cdot \text{diag}(s))(\text{diag}(s)^{-1} \cdot X) - W
 - **量化方案**：支持 INT4/INT3 group-wise 量化（group size = 128），兼容多种 4-bit 数据类型
 - **TinyChat 框架**：配套端侧推理引擎，支持 kernel fusion 和 SIMD-aware weight packing（Figure 4），适用于手机等边缘设备
 
-![Figure 4: SIMD-aware weight packing——通过重排序和位运算实现 ARM NEON 上 4-bit 权重的高效解包](../images/awq/awq_fig4_weight_packing.png)
+![Figure 4: SIMD-aware weight packing——通过重排序和位运算实现 ARM NEON 上 4-bit 权重的高效解包](../../images/awq/awq_fig4_weight_packing.png)
 
 - **多模态扩展**：首次将 4-bit 量化成功应用到多模态 LLM（LLaVA, OpenFlamingo），此前方法在多模态场景下会严重退化（Table 6, 7）
 
@@ -61,7 +61,7 @@ $$s^* = \arg\min_s \| Q(W \cdot \text{diag}(s))(\text{diag}(s)^{-1} \cdot X) - W
 
 **语言建模（WikiText-2 perplexity ↓）：**
 
-![Table 4: AWQ 在所有规模下一致优于 GPTQ，INT3-g128 下优势更明显](../images/awq/awq_table4_results.png)
+![Table 4: AWQ 在所有规模下一致优于 GPTQ，INT3-g128 下优势更明显](../../images/awq/awq_table4_results.png)
 
 | 模型 | FP16 | RTN | GPTQ | AWQ |
 |------|------|-----|------|-----|
@@ -74,14 +74,14 @@ $$s^* = \arg\min_s \| Q(W \cdot \text{diag}(s))(\text{diag}(s)^{-1} \cdot X) - W
 1. 需要更少的校准数据（10× 更少即可达到同等精度）
 2. 对校准集分布偏移更鲁棒（跨域偏移时 AWQ 仅退化 0.5-0.6 PPL，GPTQ 退化 2.3-4.9 PPL）
 
-![Figure 8: AWQ 需要更少的校准数据（左），且对校准集分布偏移更鲁棒（右）——这是相比 GPTQ 的实操优势](../images/awq/awq_fig8_calibration_robustness.png)
+![Figure 8: AWQ 需要更少的校准数据（左），且对校准集分布偏移更鲁棒（右）——这是相比 GPTQ 的实操优势](../../images/awq/awq_fig8_calibration_robustness.png)
 
 **端侧推理（TinyChat）：**
 - NVIDIA RTX 4090: 2.7-3.9× 加速（vs Huggingface FP16）
 - NVIDIA Jetson Orin: 3.5× 加速
 - Raspberry Pi 4: 成功部署 7B 模型
 
-![Figure 10: TinyChat 在 Jetson Orin 和 Raspberry Pi 上的端到端延迟——相比 AutoGPTQ、llama.cpp 等框架有 1.2-3.0× 加速](../images/awq/awq_fig10_latency.png)
+![Figure 10: TinyChat 在 Jetson Orin 和 Raspberry Pi 上的端到端延迟——相比 AutoGPTQ、llama.cpp 等框架有 1.2-3.0× 加速](../../images/awq/awq_fig10_latency.png)
 
 ### 5. Limitations & Reflection
 

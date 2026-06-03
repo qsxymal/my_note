@@ -27,7 +27,7 @@ tags: [transformer, deep-network, normalization, training-stability, nmt]
 
 ### 1. Background & Motivation
 
-![Figure 1: Depth trend](../images/deepnet/deepnet_fig1_trend_transformer_depths.png)
+![Figure 1: Depth trend](../../images/deepnet/deepnet_fig1_trend_transformer_depths.png)
 
 虽然 Transformer 参数量从百万增长到万亿，但模型**深度**增长缓慢（2022 年最深的也不过 GPT-3 的 96 层）。核心瓶颈是训练不稳定性：
 
@@ -55,11 +55,11 @@ xl+1 = LN(α · xl + Gl(xl, θl))
 
 **理论保证（Theorem 4.2）：** 模型更新量 ||ΔF|| 被 bound 在 O(η)，与深度无关。
 
-![Table 1: BLEU comparison](../images/deepnet/deepnet_table1_bleu_comparison.png)
+![Table 1: BLEU comparison](../../images/deepnet/deepnet_table1_bleu_comparison.png)
 
 WMT-17 En-De 翻译上，DeepNet 在 6L-6L 到 100L-100L 全程保持增长（28.1→28.8→29.0→28.9），而 Post-LN、DS-Init、Admin、ReZero 等在 50L+ 后发散或退化。Pre-LN 虽不发散但性能饱和于 27.4（100L-100L）。
 
-![Figure 6: IWSLT results](../images/deepnet/deepnet_fig6_iwslt_results.png)
+![Figure 6: IWSLT results](../../images/deepnet/deepnet_fig6_iwslt_results.png)
 
 DeepNet 在所有深度（10L-10L 到 100L-100L）上表现最佳，且深度越深优势越明显。
 
@@ -67,7 +67,7 @@ DeepNet 在所有深度（10L-10L 到 100L-100L）上表现最佳，且深度越
 
 **大规模多语言翻译（OPUS-100, 100 语言）：**
 
-![Table 2: OPUS-100](../images/deepnet/deepnet_table2_opus100.png)
+![Table 2: OPUS-100](../../images/deepnet/deepnet_table2_opus100.png)
 
 | 模型 | 层数 | 参数量 | X→En | En→X | 平均 |
 |------|:---:|:---:|:---:|:---:|:---:|
@@ -76,13 +76,13 @@ DeepNet 在所有深度（10L-10L 到 100L-100L）上表现最佳，且深度越
 | **DeepNet** | **200** | **863M** | **33.2** | **29.0** | **31.1** |
 | **DeepNet** | **1000** | **3.8B** | **33.9** | **30.2** | **32.1** |
 
-![Figure 8: BLEU vs depth](../images/deepnet/deepnet_fig8_average_bleu_scores.png)
+![Figure 8: BLEU vs depth](../../images/deepnet/deepnet_fig8_average_bleu_scores.png)
 
 深度从 10L 增加到 1000L，BLEU 从约 27 持续升到约 33——**没有出现收益递减**，暗示更深模型仍有提升空间。
 
 **与 SOTA（M2M-100 12B）对比：**
 
-![Table 3: M2M-100 comparison](../images/deepnet/deepnet_table3_m2m_comparison.png)
+![Table 3: M2M-100 comparison](../../images/deepnet/deepnet_table3_m2m_comparison.png)
 
 | 模型 | 层数 | 参数量 | WMT | OPUS | TED | Flores |
 |:---|:---:|:---:|:---:|:---:|:---:|:---:|

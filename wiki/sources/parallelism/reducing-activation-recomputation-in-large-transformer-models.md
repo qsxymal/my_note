@@ -27,7 +27,7 @@ tags: [distributed-training, activation-memory, sequence-parallelism, gradient-c
 
 Activation recomputation（gradient checkpointing）是大模型训练的标配——前向不存中间激活，反向时重算。但这引入了 30-40% 的计算开销。
 
-![Figure 1: 参数、优化器状态与激活显存对比——即使模型并行分布了参数和优化器状态，激活显存仍是瓶颈（红色虚线为 A100 80GB 限）](../images/activation/activation_fig1_memory_breakdown.png)
+![Figure 1: 参数、优化器状态与激活显存对比——即使模型并行分布了参数和优化器状态，激活显存仍是瓶颈（红色虚线为 A100 80GB 限）](../../images/activation/activation_fig1_memory_breakdown.png)
 
 核心问题：**tensor parallelism 和 pipeline parallelism 都有盲区**——tensor parallelism 能并行化注意力/MLP 块内的激活，但 layer-norm 和 dropout 的激活**仍然在各 tensor parallel rank 上复制**；pipeline parallelism 为了压低 pipeline bubble 需要缓存多个 micro-batch 的激活，第一级 pipeline stage 实际存储了 **全部 L 层**的激活。
 
@@ -43,7 +43,7 @@ Activation recomputation（gradient checkpointing）是大模型训练的标配�
 - 通信量与原有的 tensor parallel all-reduce 完全相同（all-reduce = reduce-scatter + all-gather）
 - **零额外通信开销**
 
-![Figure 3: Self-attention 块——红虚线标注的区域为 selective activation recomputation 的重算范围（QK^T, softmax, attention over V），内存大但计算便宜](../images/activation/activation_fig3_self_attention_selective.png)
+![Figure 3: Self-attention 块——红虚线标注的区域为 selective activation recomputation 的重算范围（QK^T, softmax, attention over V），内存大但计算便宜](../../images/activation/activation_fig3_self_attention_selective.png)
 
 **Selective Activation Recomputation**：不是 checkpoint 整个 transformer layer，而是只重算 attention 中**内存密集但计算量小**的部分：
 
@@ -63,7 +63,7 @@ Activation recomputation（gradient checkpointing）是大模型训练的标配�
 
 **实现细节：**
 
-![Figure 5: Transformer 层引入 tensor + sequence parallelism——g/ḡ 算子将序列维度的 splitting 整合进已有的 all-reduce 通信中，零额外开销](../images/activation/activation_fig5_tp_with_sequence.png)
+![Figure 5: Transformer 层引入 tensor + sequence parallelism——g/ḡ 算子将序列维度的 splitting 整合进已有的 all-reduce 通信中，零额外开销](../../images/activation/activation_fig5_tp_with_sequence.png)
 
 - `g` 和 `ḡ` 的实现利用了 ring all-reduce 的自然分解——不需要新的通信原语
 - 第一级 pipeline stage 的激活压力最大——论文引入了 **microbatch-level 选择性存储**：只对有限窗口内的 micro-batch 进行选择性重算
@@ -103,13 +103,13 @@ Activation recomputation（gradient checkpointing）是大模型训练的标配�
 **MFU 对比：**
 - 530B 模型 2240 GPU 上 MFU 达 **54.2%**（full recomputation 为 42.1%），**29% 更快**
 
-![Figure 7: 各技术激活内存占比——sequence parallelism + selective recompute 将内存降至 baseline 的 20% 以下（~5× 降低）](../images/activation/activation_fig7_memory_reduction.png)
+![Figure 7: 各技术激活内存占比——sequence parallelism + selective recompute 将内存降至 baseline 的 20% 以下（~5× 降低）](../../images/activation/activation_fig7_memory_reduction.png)
 
 **内存优化实际效果：**
 - 激活内存 **降低 5×**（baseline 的 20% 以下）
 - 结合 TP 和 pipeline parallel 后，内存节省使原来需要 recomputation 的配置可以完全不需要重算
 
-![Figure 8: Per layer 前向/反向/重算时间对比——随着模型增大，selective recompute 的开销从 7% 降至仅 2%](../images/activation/activation_fig8_perf_breakdown.png)
+![Figure 8: Per layer 前向/反向/重算时间对比——随着模型增大，selective recompute 的开销从 7% 降至仅 2%](../../images/activation/activation_fig8_perf_breakdown.png)
 
 ### 4. Limitations & Reflection
 

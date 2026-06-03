@@ -37,7 +37,7 @@ Transformer 的核心限制是 self-attention 的 O(n²) 计算和内存复杂�
 
 ### 2. High-Level Method
 
-![Figure 1: Attention building blocks](../images/big-bird/bigbird_fig1_building_blocks.png)
+![Figure 1: Attention building blocks](../../images/big-bird/bigbird_fig1_building_blocks.png)
 
 **三种 attention 组件：**
 
@@ -70,24 +70,24 @@ Transformer 的核心限制是 self-attention 的 O(n²) 计算和内存复杂�
 
 **消融实验——三种组件缺一不可：**
 
-![Table 1: Building block comparison](../images/big-bird/bigbird_table1_ablations.png)
+![Table 1: Building block comparison](../../images/big-bird/bigbird_table1_ablations.png)
 
 Random-only（60.1 MLM）或 Window-only（58.3）都远低于 BERT-base（64.2），R+W 组合（62.7）仍差 1.5 分，仅三者组合（BIGBIRD）才能追上 full attention。
 
 **QA——利用长上下文：**
 
-![Table 2: QA Dev results](../images/big-bird/bigbird_table2_qa_dev.png)
+![Table 2: QA Dev results](../../images/big-bird/bigbird_table2_qa_dev.png)
 
 BIGBIRD-ETC 在所有四个 QA 数据集上优于 Longformer 和 RoBERTa（后者只能处理 512 tokens）。
 
-![Table 3: QA Test results](../images/big-bird/bigbird_table3_qa_test.png)
+![Table 3: QA Test results](../../images/big-bird/bigbird_table3_qa_test.png)
 
 在 Natural Questions (LA)、TriviaQA、WikiHop 上 **SOTA**（2020 年水平），与 top-3 leaderboard 条目对比。
 
 **长文档摘要：**
 
-![Table 4: Summarization results part 1](../images/big-bird/bigbird_table4_summarization_p1.png)
-![Table 4: Summarization results part 2](../images/big-bird/bigbird_table4_summarization_p2.png)
+![Table 4: Summarization results part 1](../../images/big-bird/bigbird_table4_summarization_p1.png)
+![Table 4: Summarization results part 2](../../images/big-bird/bigbird_table4_summarization_p2.png)
 
 Base 级：BIGBIRD-RoBERTa 在 Arxiv（R-1 41.22）、PubMed（43.70）、BigPatent（55.69）上显著超过 Pegasus。
 Large 级：BIGBIRD-Pegasus 在 BigPatent 上 R-1 60.64（vs Pegasus 52.25），+8.39 分。
@@ -106,11 +106,11 @@ Arxiv 上比 SoTA 高 5 分，超 512 比例越高的任务收益越大。短文
 
 DNA 序列 MLM 预训练（BPE tokenization，平均 8.78 bp/token）：
 
-![Table 5: MLM BPC for DNA](../images/big-bird/bigbird_table5_mlm_bpc.png)
+![Table 5: MLM BPC for DNA](../../images/big-bird/bigbird_table5_mlm_bpc.png)
 
 BIGBIRD（seqlen 4096）取得 1.12 BPC，优于 BERT（seqlen 512）的 1.23。
 
-![Table 7: Chromatin-Profile Prediction](../images/big-bird/bigbird_table7_chromatin_profile.png)
+![Table 7: Chromatin-Profile Prediction](../../images/big-bird/bigbird_table7_chromatin_profile.png)
 
 启动子预测 **99.9% F1**（+4.3% over previous best）；染色质谱预测 TF/HM/DHS 均达到或超过 DeepSea。
 

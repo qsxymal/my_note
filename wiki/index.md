@@ -29,6 +29,11 @@
 - [2D Parallelism](concepts/2d-parallelism.md) — 基于 SUMMA 的 2D 分区模型并行，参数和激活同时分布化，消除激活冗余瓶颈
 - [Transformer](concepts/transformer.md) — 完全基于 self-attention 的序列建模架构，现代 LLM 的基础
 - [BERT](concepts/bert.md) — 深度双向 Transformer 预训练模型，通过 MLM + NSP 学习双向表示
+- [Gated Delta Rule](concepts/gated-delta-rule.md) — 统一 gating（衰减）和 delta rule（选择性更新）的线性 RNN 记忆管理机制
+- [Gated Linear Unit (GLU)](concepts/gated-linear-unit.md) — 简化门控激活函数 A ⊗ σ(B)，比 LSTM 风格的门控收敛更快
+- [Fast Weight Programmer (FWP)](concepts/fast-weight-programmer.md) — 用慢网络在线编程快权重存储器的通用框架，线性注意力和线性 RNN 的理论基础
+- [ALiBi (Attention with Linear Biases)](concepts/alibi.md) — 在 attention score 上加与距离成正比的线性偏置，使 Transformer 天然支持长度外推（Train Short, Test Long）
+- [Dynamic Tanh (DyT)](concepts/dynamic-tanh.md) — 用 $\tanh(\alpha x) + \text{affine}$ 替代 normalization layer，使 Transformer 在无 normalization 下达到同等或更好性能
 
 ## Sources
 
@@ -39,6 +44,12 @@
 - [DeepNet: Scaling Transformers to 1,000 Layers](sources/architecture/deepnet-scaling-transformers-to-1000-layers.md) — 提出 DeepNorm + 理论初始化将 Transformer 扩展到 1,000 层
 - [Big Bird: Transformers for Longer Sequences](sources/architecture/big-bird-transformers-for-longer-sequences.md) — 通过 random + window + global 三种稀疏 attention 组件以 O(n) 复杂度逼近 full attention
 - [Block-Attention for Efficient Prefilling](sources/architecture/block-attention-for-efficient-prefilling.md) — 将 RAG 文档划分为独立 block 各算各的 KV cache，仅 query block 关注全局，TTFT 降低 98.7%
+- [Gated Delta Networks: Improving Mamba2 with Delta Rule](sources/architecture/gated-delta-networks.md) — 提出 gated delta rule，统一 gating 与 delta rule，在语言建模和长上下文理解上超越 Mamba2/DeltaNet
+- [Language Modeling with Gated Convolutional Networks](sources/architecture/gated-convolutional-language-model.md) — 用堆叠门控卷积替代 RNN 实现语言建模，首次以非循环架构匹敌循环模型，提出 GLU 门控
+- [On Layer Normalization in the Transformer Architecture](sources/architecture/on-layer-normalization-in-the-transformer-architecture.md) — 用 mean field theory 证明 Post-LN 的梯度爆炸导致 warm-up 必须，Pre-LN 可安全移除 warm-up，训练更快
+- [Linear Transformers Are Secretly Fast Weight Programmers (DeltaNet)](sources/architecture/linear-transformers-are-secretly-fast-weight-programmers.md) — 证明线性注意力与 Fast Weight Programmers 等价，用 delta rule 替代 sum rule 改善有限记忆更新
+- [Train Short, Test Long: Attention with Linear Biases (ALiBi)](sources/architecture/train-short-test-long-attention-with-linear-biases.md) — 在 attention score 上加线性偏置取代位置编码，实现高效长度外推，训练快 11%、内存少 11%
+- [Transformers without Normalization (DyT)](sources/architecture/transformers-without-normalization.md) — 发现 LN 的 tanh 状 S 形映射，提出 $\tanh(\alpha x)$ 作为 normalization 替代，在 ViT 到 LLaMA 70B 上全部匹敌原版
 
 ### Parallelism — 并行训练
 
@@ -54,15 +65,18 @@
 - [SmoothQuant: Accurate and Efficient Post-Training Quantization for LLMs](sources/quantization/smoothquant-accurate-and-efficient-post-training-quantization-for-large-language-models.md) — W8A8 量化方案，通过迁移量化难度到权重实现纯 INT8 GEMM
 - [AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration](sources/quantization/awq-activation-aware-weight-quantization-for-llm-compression-and-acceleration.md) — 基于激活分布保护 ~1% salient weight channels 的 4-bit weight-only 量化
 - [GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers](sources/quantization/gptq-accurate-post-training-quantization-for-generative-pre-trained-transformers.md) — 基于 Hessian 二阶近似的 weight-only 4-bit 量化，首次实现 175B 模型单卡推理
+- [KVQuant: Towards 10 Million Context Length LLM Inference with KV Cache Quantization](sources/quantization/kvquant-towards-10-million-context-length-llm-inference-with-kv-cache-quantization.md) — 通过 Per-Channel/Pre-RoPE/nuqX/Dense-and-Sparse 四项技术实现 KV cache 3-bit 量化 < 0.1 PPL 退化，支持百万级上下文
 
 ### Representation — 表示学习
 
 - [BERT: Pre-training of Deep Bidirectional Transformers](sources/representation/bert-pre-training-of-deep-bidirectional-transformers-for-language-understanding.md) — 通过 Masked LM + NSP 实现深度双向预训练，在 11 项 NLP 任务上取得 SOTA
 - [Deep contextualized word representations (ELMo)](sources/representation/deep-contextualized-word-representations.md) — 将 biLM 所有层的表示加权组合作为上下文词向量，开创预训练范式
 - [BERT Rediscovers the Classical NLP Pipeline](sources/representation/bert-rediscovers-the-classical-nlp-pipeline.md) — 探测 BERT 各层发现其内部按经典 NLP pipeline 顺序编码语言信息
+- [Visualizing Attention in Transformer-Based Models](sources/representation/visualizing-attention-in-transformer-based-language-representation-models.md) — 三层次（attention-head / model / neuron view）注意力可视化工具，支持 BERT/GPT-2 attention 分析
 
 ### Inference — 推理优化
 
+- [FlashInfer: Efficient and Customizable Attention Engine for LLM Inference Serving](sources/inference/flashinfer-efficient-and-customizable-attention-engine-for-llm-inference-serving.md) — 基于代码生成的可定制 attention 引擎，通过 block-sparse 统一格式、JIT 编译和动态负载均衡调度实现 29-69% ITL 降低
 - [PagedAttention: Efficient Memory Management for LLM Serving with vLLM](sources/inference/efficient-memory-management-for-large-language-model-serving-with-pagedattention.md) — 将 OS 分页/虚拟内存引入 KV cache 管理，吞吐量 2-4× 提升
 
 ### Training — 训练方法

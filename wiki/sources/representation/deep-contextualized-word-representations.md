@@ -60,7 +60,7 @@ tags: [word-embeddings, contextualized, nlp, transfer-learning, biLM]
 
 **主结果——6 个 NLP 任务全面 SOTA：**
 
-![Table 1: Main results](../images/elmo/elmo_table1_main_results.png)
+![Table 1: Main results](../../images/elmo/elmo_table1_main_results.png)
 
 | Task | Previous SOTA | Baseline | ELMo+Baseline | 提升（相对） |
 |------|:---:|:---:|:---:|:---:|
@@ -73,13 +73,13 @@ tags: [word-embeddings, contextualized, nlp, transfer-learning, biLM]
 
 **层权重消融——全部层 > 仅顶层：**
 
-![Table 2: Layer weighting ablation](../images/elmo/elmo_table2_layer_ablation.png)
+![Table 2: Layer weighting ablation](../../images/elmo/elmo_table2_layer_ablation.png)
 
 在所有三个任务上，使用全部层（All layers, λ=0.001）优于仅用顶层（Last Only）。正则化权重 λ 进一步约束各层权重接近平均值。
 
 **不同层编码不同信息类型：**
 
-![Table 4: Nearest neighbors for "play"](../images/elmo/elmo_table4_nearest_neighbors.png)
+![Table 4: Nearest neighbors for "play"](../../images/elmo/elmo_table4_nearest_neighbors.png)
 
 GloVe 的 "play" 最近邻混在各种词性和语义中（game, player, play, football），而 biLM 的上下文表示能根据语境准确区分——一个是棒球比赛中的 "play"（spectacular play），另一个是戏剧中的 "play"（Broadway play）。
 
@@ -88,7 +88,7 @@ GloVe 的 "play" 最近邻混在各种词性和语义中（game, player, play, f
 - **WSD 词义消歧**：biLM 第二层表现更好（69.0 F1 vs 第一层 67.4）——高层编码语义信息
 - **CoVe 对比**：biLM 在 POS 和 WSD 上均优于 CoVe，且差距显著
 
-![Table 5: WSD results](../images/elmo/elmo_table5_wsd.png)
+![Table 5: WSD results](../../images/elmo/elmo_table5_wsd.png)
 
 ### 4. Analysis & Ablation
 

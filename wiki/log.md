@@ -1,5 +1,51 @@
 # Wiki Log
 
+## [2026-06-03] ingest | Visualizing Attention in Transformer-Based Language Representation Models
+
+- 添加 source 页面: `sources/representation/visualizing-attention-in-transformer-based-language-representation-models.md`
+- 提取关键图表至 `images/attention-visualization/`（7 张图）
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | Linear Transformers Are Secretly Fast Weight Programmers
+
+- 添加 source 页面: `sources/architecture/linear-transformers-are-secretly-fast-weight-programmers.md`
+- 添加 concept 页面: `concepts/fast-weight-programmer.md` — Fast Weight Programmer (FWP)
+- 提取关键图表至 `images/linear-fast-weight/`（5 张图）
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | KVQuant: Towards 10 Million Context Length LLM Inference with KV Cache Quantization
+
+- 添加 source 页面: `sources/quantization/kvquant-towards-10-million-context-length-llm-inference-with-kv-cache-quantization.md`
+- 提取关键图表至 `images/kvquant/`（6 张图）
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | Language Modeling with Gated Convolutional Networks
+
+- 添加 source 页面: `sources/architecture/gated-convolutional-language-model.md`
+- 添加 concept 页面: `concepts/gated-linear-unit.md` — Gated Linear Unit (GLU)
+- 提取关键图表至 `images/gated-convolutional/`（8 张图）
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | On Layer Normalization in the Transformer Architecture
+
+- 添加 source 页面: `sources/architecture/on-layer-normalization-in-the-transformer-architecture.md`
+- 提取关键图表至 `images/layer-normalization-transformer/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | Train Short, Test Long: Attention with Linear Biases (ALiBi)
+
+- 添加 source 页面: `sources/architecture/train-short-test-long-attention-with-linear-biases.md`
+- 添加 concept 页面: `concepts/alibi.md` — ALiBi（线性距离偏置的位置编码）
+- 提取关键图表至 `images/alibi-attention/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | Transformers without Normalization (DyT)
+
+- 添加 source 页面: `sources/architecture/transformers-without-normalization.md`
+- 添加 concept 页面: `concepts/dynamic-tanh.md` — Dynamic Tanh (DyT)
+- 提取关键图表至 `images/transformers-without-normalization/`（19 张图）
+- 更新 `index.md`, `images/index.md`
+
 ## [2026-06-03] restructuring | Categorize raw/ and wiki/sources/ into subdirectories
 
 - `raw/` 按类别分为 6 个子目录：architecture/、parallelism/、quantization/、representation/、inference/、training/
@@ -95,6 +141,19 @@
 - 添加 concept 页面: `concepts/transformer.md` — Transformer 架构
 - 添加 concept 页面: `concepts/bert.md` — BERT
 - 更新 `index.md`
+
+## [2026-06-03] ingest | Gated Delta Networks: Improving Mamba2 with Delta Rule
+
+- 添加 source 页面: `sources/architecture/gated-delta-networks.md`
+- 添加 concept 页面: `concepts/gated-delta-rule.md` — Gated Delta Rule（统一 gating 和 delta rule）
+- 提取关键图表至 `images/gated-delta-networks/`（3 张图）
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | FlashInfer: Efficient and Customizable Attention Engine for LLM Inference Serving
+
+- 添加 source 页面: `sources/inference/flashinfer-efficient-and-customizable-attention-engine-for-llm-inference-serving.md`
+- 提取关键图表至 `images/flashinfer/`（17 张图）
+- 更新 `index.md`, `images/index.md`
 
 ## [2026-06-03] enhancement | arXiv source figure auto-mapping & batch backfill
 

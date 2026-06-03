@@ -36,7 +36,7 @@ tags: [training-objective, multi-token, llm, speculative-decoding, code-generati
 
 ### 2. High-Level Method
 
-![Figure 1: Multi-token prediction 概述](../images/multi-token-prediction/multitoken_fig1_overview.png)
+![Figure 1: Multi-token prediction 概述](../../images/multi-token-prediction/multitoken_fig1_overview.png)
 
 **架构**：共享 Transformer trunk（$f_s$）→ n 个独立 Transformer 层 head（$f_{h_i}$）→ 共享 unembedding 矩阵（$f_u$）。每个 head 预测位置 t+i 的 token：
 $$
@@ -58,13 +58,13 @@ $$
 
 **代码生成——模型规模扩展：**
 
-![Figure 3: MBPP 上各规模模型的多 token 预测结果](../images/multi-token-prediction/multitoken_fig3_scaling.png)
+![Figure 3: MBPP 上各规模模型的多 token 预测结果](../../images/multi-token-prediction/multitoken_fig3_scaling.png)
 
 n=4（4-token 预测）在大模型（6.7B、13B）上优势显著，小模型（0.3B-0.6B）上 n=2 略好或持平。表明 multi-token 预测的优势随模型规模增大而增大。
 
 **7B 代码模型主结果：**
 
-![Table 1: 7B 模型多 token 预测结果](../images/multi-token-prediction/multitoken_table1_results.png)
+![Table 1: 7B 模型多 token 预测结果](../../images/multi-token-prediction/multitoken_table1_results.png)
 
 | 训练数据 | Vocab | n | MBPP@1 | HumanEval@1 | APPS/Intro@1 |
 |---------|-------|---|--------|-------------|-------------|
@@ -95,19 +95,19 @@ Byte 级任务中局部模式更强，multi-token 的收益最明显。
 
 **归纳能力（Induction Head）：**
 
-![Figure 7: Multi-token 预测显著促进 Induction Head 形成](../images/multi-token-prediction/multitoken_fig7_induction.png)
+![Figure 7: Multi-token 预测显著促进 Induction Head 形成](../../images/multi-token-prediction/multitoken_fig7_induction.png)
 
 小模型（<30M 参数）用 next-token 几乎学不到 induction 能力，而 2-token 预测仅在 1M 参数时就展现出 induction 行为。
 
 **算法推理（多项式运算）：**
 
-![Figure 8: 算法推理任务中的泛化能力](../images/multi-token-prediction/multitoken_fig8_arithmetic.png)
+![Figure 8: 算法推理任务中的泛化能力](../../images/multi-token-prediction/multitoken_fig8_arithmetic.png)
 
 Multi-token 预测在所有难度级别上准确率更高，尤其在 OOD 泛化上显著提升。**将模型大小翻三倍的效果不如改用 multi-token 预测损失。**
 
 **自然语言——摘要：**
 
-![Figure 6: 摘要 ROUGE-L 提升](../images/multi-token-prediction/multitoken_fig6_summarization.png)
+![Figure 6: 摘要 ROUGE-L 提升](../../images/multi-token-prediction/multitoken_fig6_summarization.png)
 
 n=2 和 n=4 在 8 个摘要数据集上的平均 ROUGE-L 持续优于 baseline n=1。200B tokens 时 n=4 提升 0.46，n=2 提升 0.51。
 

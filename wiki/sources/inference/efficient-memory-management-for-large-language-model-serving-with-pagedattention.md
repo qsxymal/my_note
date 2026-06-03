@@ -28,7 +28,7 @@ tags: [llm-serving, memory-management, attention, inference-system]
 
 LLM serving 要提升吞吐量就必须将足够多的请求组成 batch 一起处理。然而，每个请求的 **KV cache** 极其庞大（OPT-13B 单 token 需 800KB，单请求可达 1.6 GB），且随生成过程动态增长和收缩。
 
-![Figure 1: 13B 模型显存布局与吞吐量瓶颈](../images/pagedattention/pagedattention_fig1_memory_throughput.png)
+![Figure 1: 13B 模型显存布局与吞吐量瓶颈](../../images/pagedattention/pagedattention_fig1_memory_throughput.png)
 
 上图（左）展示了 A100 40GB 上 13B 参数模型的显存分配：参数量占 65%，KV cache 占超过 30%。在 batch size 增大时（右图），现有系统（FasterTransformer）吞吐量迅速饱和，而 vLLM 能持续增长。
 
@@ -36,7 +36,7 @@ LLM serving 要提升吞吐量就必须将足够多的请求组成 batch 一起�
 
 **问题 1：严重的内存碎片化。** 系统必须为每个请求预分配最大长度（如 2048 token）的连续空间。实际输出通常远短于最大值，造成严重的内部碎片。同时，不同请求的预分配大小不同导致外部碎片。
 
-![Figure 2: 内存浪费对比](../images/pagedattention/pagedattention_fig2_memory_waste.png)
+![Figure 2: 内存浪费对比](../../images/pagedattention/pagedattention_fig2_memory_waste.png)
 
 实测仅 20.4%-38.2% 的 KV cache 内存用于存储实际 token 状态，其余被碎片化和预留浪费。
 
@@ -48,11 +48,11 @@ LLM serving 要提升吞吐量就必须将足够多的请求组成 batch 一起�
 
 核心洞察：将操作系统的**分页（paging）** 和**虚拟内存**思想引入 KV cache 管理。
 
-![Figure 5: PagedAttention 算法示意](../images/pagedattention/pagedattention_fig5_algorithm.png)
+![Figure 5: PagedAttention 算法示意](../../images/pagedattention/pagedattention_fig5_algorithm.png)
 
 **PagedAttention** 将每个序列的 KV cache 划分为固定大小的 **KV blocks**（block size = B token）。每个 block 包含连续的 B 个 key 向量和 B 个 value 向量。Attention 计算被改写为逐 block 的块式运算，使得 KV cache 可以存储在**非连续**的物理内存中。
 
-![Figure 6: vLLM 的 block table 地址翻译](../images/pagedattention/pagedattention_fig6_block_table.png)
+![Figure 6: vLLM 的 block table 地址翻译](../../images/pagedattention/pagedattention_fig6_block_table.png)
 
 vLLM 引入 **block table**（类似 OS 的页表）来维护每个请求的**逻辑 KV block → 物理 KV block** 的映射：
 - 逻辑块是请求视角的连续地址空间
@@ -71,7 +71,7 @@ vLLM 引入 **block table**（类似 OS 的页表）来维护每个请求的**�
 
 **Copy-on-Write 共享：** 并行采样时，多个输出序列共享同一 prompt 的物理块。vLLM 为每个物理块维护引用计数。当某一序列需要修改共享块时，触发 copy-on-write 分配新块并拷贝数据。
 
-![Figure 8: 并行采样中的 copy-on-write](../images/pagedattention/pagedattention_fig8_parallel_sampling_cow.png)
+![Figure 8: 并行采样中的 copy-on-write](../../images/pagedattention/pagedattention_fig8_parallel_sampling_cow.png)
 
 **调度与抢占：** FCFS 调度策略。显存不足时采用 **all-or-nothing** 驱逐策略——一个请求的所有 KV block 必须完整在 GPU 中才能继续解码。vLLM 支持两种恢复机制：
 - **Recomputation（重算）：** 从 checkpoint 重新计算被驱逐的 KV cache，block size 无关
@@ -85,11 +85,11 @@ vLLM 引入 **block table**（类似 OS 的页表）来维护每个请求的**�
 
 **实验设置：** OPT-13B（1×A100）、OPT-66B（4×A100）、OPT-175B（8×A100-80GB），基于 ShareGPT 和 Alpaca 数据集合成的请求 trace。
 
-![Figure 12: 主要吞吐量-延迟结果](../images/pagedattention/pagedattention_fig12_throughput_latency.png)
+![Figure 12: 主要吞吐量-延迟结果](../../images/pagedattention/pagedattention_fig12_throughput_latency.png)
 
 **基本采样：** vLLM 比 Orca (Oracle) 的可持续请求率高 **1.7×-2.7×**，比 Orca (Max) 高 **2.7×-8×**，比 FasterTransformer 高至 **22×**。
 
-![Figure 13: 平均 batch 请求数](../images/pagedattention/pagedattention_fig13_batched_requests.png)
+![Figure 13: 平均 batch 请求数](../../images/pagedattention/pagedattention_fig13_batched_requests.png)
 
 上图解释原因：vLLM 能 batch 更多请求——ShareGPT 上比 Orca (Oracle) 多 2.2×，比 Orca (Max) 多 4.3×；Alpaca 上差距更大（因短序列多，碎片化影响更严重）。
 

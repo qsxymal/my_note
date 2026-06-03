@@ -50,7 +50,7 @@ BERT 在几乎所有 NLP 任务上取得 SOTA，但其内部如何表示语言�
 
 ### 3. Key Findings
 
-![Figure 1: BERT-large 各探测任务结果](../images/bert-pipeline/bert-pipeline_fig1_summary.png)
+![Figure 1: BERT-large 各探测任务结果](../../images/bert-pipeline/bert-pipeline_fig1_summary.png)
 
 **发现 1：BERT 内部的层次顺序与经典 NLP pipeline 一致**
 
@@ -66,7 +66,7 @@ BERT 在几乎所有 NLP 任务上取得 SOTA，但其内部如何表示语言�
 
 基础句法信息（POS）在较低层编码，高级语义信息（coreference）在高层编码。全部任务按此顺序排列，与传统 NLP pipeline 惊人一致。
 
-![Figure 2: 逐层指标分布](../images/bert-pipeline/bert-pipeline_fig2_layer_metrics.png)
+![Figure 2: 逐层指标分布](../../images/bert-pipeline/bert-pipeline_fig2_layer_metrics.png)
 
 **发现 2：句法信息集中，语义信息分散**
 

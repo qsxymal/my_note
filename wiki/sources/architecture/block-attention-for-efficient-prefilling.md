@@ -34,7 +34,7 @@ RAG 场景下，LLM 需要 prefill 大量检索文档（通常 10-20 个 passage
 
 ### 2. High-Level Method
 
-![Figure 1: Block-attention masks](../images/block-attention/blockattn_fig1_masks.png)
+![Figure 1: Block-attention masks](../../images/block-attention/blockattn_fig1_masks.png)
 
 **Block-attention 的核心设计：**
 - 将输入序列 S 分为 k 个 block：{b₁, b₂, ..., bₖ}
@@ -57,7 +57,7 @@ RAG 场景下，LLM 需要 prefill 大量检索文档（通常 10-20 个 passage
 - 无需从头训练，仅需少量 fine-tuning steps（~200 steps 即收敛）
 
 **推理流程：**
-![Figure 4: Accuracy over training steps](../images/block-attention/blockattn_fig4_accuracy.png)
+![Figure 4: Accuracy over training steps](../../images/block-attention/blockattn_fig4_accuracy.png)
 
 仅需约 200 training steps 即可收敛至 full-attention 水平。
 
@@ -65,19 +65,19 @@ RAG 场景下，LLM 需要 prefill 大量检索文档（通常 10-20 个 passage
 
 **RAG 基准——精度对比：**
 
-![Table 1: RAG benchmarks](../images/block-attention/blockattn_table1_rag.png)
+![Table 1: RAG benchmarks](../../images/block-attention/blockattn_table1_rag.png)
 
 Tulu3-block-ft 与 Tulu3-RAG（full attention）精度差距 ≤ 1%。Position re-encoding 贡献约 2% 精度提升（移除后降为 68.9-74.4），而无 fine-tuning 直接切换损失巨大。
 
 **通用/ICL 基准——无缝切换能力：**
 
-![Table 2: General benchmarks](../images/block-attention/blockattn_table2_general.png)
+![Table 2: General benchmarks](../../images/block-attention/blockattn_table2_general.png)
 
 在 zero-shot 任务（IFEval, HumanEval, MMLU）上自动 fallback 到 full-attention；ICL 场景（GSM8K, MATH, BBH, DROP）上每样本独立分块，性能持平甚至略高于 full-attention 基线。
 
 **效率——核心优势：**
 
-![Table 3: TTFT and FLOPs efficiency](../images/block-attention/blockattn_table3_efficiency.png)
+![Table 3: TTFT and FLOPs efficiency](../../images/block-attention/blockattn_table3_efficiency.png)
 
 | Total Length | TTFT (vanilla) | TTFT (block) | FLOPs 降低 |
 |-------------|---------------|-------------|-----------|

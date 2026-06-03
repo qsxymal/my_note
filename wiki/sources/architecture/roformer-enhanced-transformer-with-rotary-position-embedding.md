@@ -55,7 +55,7 @@ R^d_{Θ,m} = diag(R(mθ₁), R(mθ₂), ..., R(mθ_{d/2}))
 
 内积仅依赖于相对位置 n-m，R^d_{Θ} 是正交矩阵保证数值稳定性。
 
-![Figure 2: Long-term decay](../images/rope/rope_fig2_long_term_decay.png)
+![Figure 2: Long-term decay](../../images/rope/rope_fig2_long_term_decay.png)
 
 RoPE 的长期衰减特性：内积上界随相对距离增加而衰减，自动编码了"近强远弱"的位置相关性。
 
@@ -63,13 +63,13 @@ RoPE 的长期衰减特性：内积上界随相对距离增加而衰减，自动
 
 **机器翻译：**
 
-![Table 1: BLEU](../images/rope/rope_table1_bleu.png)
+![Table 1: BLEU](../../images/rope/rope_table1_bleu.png)
 
 WMT 2014 En→De，RoFormer 27.5 BLEU vs Transformer-base 27.3。
 
 **MLM 预训练：**
 
-![Figure 3: MLM loss curves](../images/rope/rope_fig3a_evaluation_rope_language.png)
+![Figure 3: MLM loss curves](../../images/rope/rope_fig3a_evaluation_rope_language.png)
 
 左图：RoFormer 的 MLM loss 下降显著快于 BERT（同等 steps 下更低）。右图：PerFormer + RoPE 相对于无 RoPE 收敛更快、loss 更低——RoPE 兼容线性注意力。
 
