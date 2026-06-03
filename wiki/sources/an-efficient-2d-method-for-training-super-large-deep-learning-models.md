@@ -7,6 +7,22 @@ tags: [distributed-training, model-parallelism, 2d-parallelism, summa]
 
 # An Efficient 2D Method for Training Super-Large Deep Learning Models (Optimus)
 
+| 项目 | 内容 |
+|------|------|
+| **Authors** | Qifan Xu (UCLA), Shenggui Li, Chaoyu Gong, Yang You (NUS) |
+| **Published** | 2021-04 (NUS Technical Report) |
+| **Link** | [arXiv 2104.05343](https://arxiv.org/abs/2104.05343) |
+
+**一句话总结:**
+- 基于 SUMMA 的 2D 分区模型并行方案，将参数和激活同时分布在 $q \times q$ 网格上，消除 Megatron 的激活冗余瓶颈，isoefficiency 从 $p^3$ 降至 $(\sqrt{p}\log p)^3$。
+
+**核心贡献:**
+- 将 HPC 领域 SUMMA 算法引入 Transformer 训练，参数和激活全部分布化
+- 64 GPU 上实现 1.48x 训练加速、1.78x 推理加速、8x 最大 batch size（vs Megatron）
+- Isoefficiency 分析证明 2D 方案在大规模下扩展性显著优于 1D
+
+---
+
 ### 1. Background & Motivation
 
 Megatron-LM 的 tensor parallelism 是一维方案：参数被拆分但**每个设备仍持有完整的激活值**。随着模型和 batch size 增大，激活显存成为瓶颈。

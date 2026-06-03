@@ -7,6 +7,22 @@ tags: [quantization, llm, efficiency, inference]
 
 # LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale
 
+| 项目 | 内容 |
+|------|------|
+| **Authors** | Tim Dettmers, Mike Lewis, Younes Belkada, Luke Zettlemoyer (Meta AI / University of Washington) |
+| **Published** | 2022-08 (NeurIPS 2022) |
+| **Link** | [arXiv 2208.07339](https://arxiv.org/abs/2208.07339) |
+
+**一句话总结:**
+- 首次实现 175B 参数 Transformer 的无精度损失 INT8 推理，核心发现是 6.7B 参数时异常值特征相变式涌现。
+
+**核心贡献:**
+- 系统性地发现并分析了大模型在 6.7B 参数时出现的 emergent outlier 现象
+- 提出 vector-wise quantization + mixed-precision decomposition 的两阶段方案（LLM.int8()）
+- 在 OPT-175B 上实现 2x 加速和 2x 内存节省，精度完整保持 FP16 水平
+
+---
+
 ### 1. Background & Motivation
 
 随着 LLM 规模增长（GPT-3 175B 等），推理所需 GPU 内存急剧增加。FP16 推理需要大量显存（175B 模型 ~350GB），而现有的 8-bit 量化方法在模型超过 350M 参数时就会出现精度下降。

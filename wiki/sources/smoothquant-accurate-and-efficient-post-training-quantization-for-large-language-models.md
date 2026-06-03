@@ -7,6 +7,22 @@ tags: [quantization, llm, efficiency, inference, w8a8]
 
 # SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models
 
+| 项目 | 内容 |
+|------|------|
+| **Authors** | Guangxuan Xiao, Ji Lin, Mickael Seznec, Hao Wu, Julien Demouth, Song Han (MIT HAN Lab / NVIDIA) |
+| **Published** | 2022-11 (ICML 2023) |
+| **Link** | [arXiv 2211.10438](https://arxiv.org/abs/2211.10438) |
+
+**一句话总结:**
+- 通过数学等价变换将激活的量化难度"迁移"到权重，实现纯 W8A8 INT8 GEMM 推理，零精度损失。
+
+**核心贡献:**
+- 提出 per-channel smoothing factor 的量化难度迁移机制（smooth 激活，补偿权重）
+- 设计三档效率-精度级别（O1/O2/O3），最高 1.56x 加速
+- 首次在 530B MT-NLG 上实现单节点（8 GPU）推理，覆盖 9 个模型族验证泛化性
+
+---
+
 ### 1. Background & Motivation
 
 大模型规模增长远超 GPU 内存增速（Figure 1），FP16 推理需要大量 GPU，成本高昂。量化可将权重和激活从 FP16 降到 INT8，理论上内存减半、吞吐翻倍。

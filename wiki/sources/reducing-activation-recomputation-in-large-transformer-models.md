@@ -7,6 +7,22 @@ tags: [distributed-training, activation-memory, sequence-parallelism, gradient-c
 
 # Reducing Activation Recomputation in Large Transformer Models
 
+| 项目 | 内容 |
+|------|------|
+| **Authors** | Vijay Korthikanti, Jared Casper, Sangkug Lym, Lawrence McAfee, Michael Andersch, Mohammad Shoeybi, Bryan Catanzaro (NVIDIA) |
+| **Published** | 2022-05 (MLSys 2023) |
+| **Link** | [arXiv 2205.05198](https://arxiv.org/abs/2205.05198) |
+
+**一句话总结:**
+- 提出 sequence parallelism 和 selective activation recomputation，将激活内存降低 5×，recomputation 开销从 36% 降至 2%，成为 Megatron-LM 标准组件。
+
+**核心贡献:**
+- Sequence parallelism：在非 TP 区域沿序列维度分布激活，利用 ring all-reduce 自然分解实现零额外通信
+- Selective activation recomputation：只重算内存密集但计算便宜的 attention 操作（$5as/h$ 项），仅 1.6-2.7% FLOPs 开销
+- 1 万亿参数模型 MFU 达 56.3%，端到端训练比 full recomputation 快 ~30%
+
+---
+
 ### 1. Background & Motivation
 
 Activation recomputation（gradient checkpointing）是大模型训练的标配——前向不存中间激活，反向时重算。但这引入了 30-40% 的计算开销。

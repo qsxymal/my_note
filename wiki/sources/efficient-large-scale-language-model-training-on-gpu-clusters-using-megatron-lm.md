@@ -7,6 +7,22 @@ tags: [distributed-training, pipeline-parallelism, tensor-parallelism, megatron,
 
 # Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM
 
+| 项目 | 内容 |
+|------|------|
+| **Authors** | Deepak Narayanan, Mohammad Shoeybi, Jared Casper, Patrick LeGresley, Mostofa Patwary, Vijay Korthikanti, Dmitri Vainbrand, Prethvi Kashinkunti, Julie Bernauer, Bryan Catanzaro, Amar Phanishayee, Matei Zaharia (NVIDIA / Stanford / Microsoft Research) |
+| **Published** | 2021-04 (PPoPP 2021, SC22 Best Paper Finalist) |
+| **Link** | [arXiv 2104.04473](https://arxiv.org/abs/2104.04473) |
+
+**一句话总结:**
+- 系统性地组合 Pipeline + Tensor + Data Parallelism（PTD-P），提出 interleaved 流水线调度，3072 A100 GPU 上训练 1 万亿参数模型达到 502 petaFLOP/s（52% 峰值）。
+
+**核心贡献:**
+- 提出 PTD-P：tensor parallelism 节点内、pipeline parallelism 跨节点、data parallelism 跨副本的组合策略
+- Interleaved pipeline schedule 将 bubble 减少 $v$ 倍，吞吐提升 10%+
+- 首次训练 1 万亿参数模型，502 petaFLOP/s 持续算力，单 GPU 利用率 52%
+
+---
+
 ### 1. Background & Motivation
 
 之前的模型并行方案各有局限：
@@ -20,6 +36,10 @@ tags: [distributed-training, pipeline-parallelism, tensor-parallelism, megatron,
 ### 2. High-Level Method
 
 ![Figure 2: PTD-P 组合——pipeline parallelism 跨节点、tensor parallelism 节点内、data parallelism 跨副本](../images/megatron-cluster/meg_cluster_fig2_ptdp_combination.png)
+* Gpipe：所有前向计算完成，再开始反向计算
+* 1F1B：前反向可以交替进行，反向完成后可以释放一些空间，内存更优优势
+* interleave 1F1B：一个设备负载v个stage，mini-batch可以支持更小，bubble更小。当前的方案。
+
 
 论文提出 **PTD-P**（Pipeline + Tensor + Data Parallelism）组合方案：
 
@@ -102,7 +122,7 @@ Bubble 占比从 $\frac{p-1}{m}$ 降至 $\frac{1}{v} \cdot \frac{p-1}{m}$。代�
 - [[pipeline-parallelism|Pipeline parallelism]] — 跨节点按层拆分
 - [[tensor-parallelism|Tensor parallelism]] — 节点内按矩阵维度拆分
 - [[pipeline-parallelism#Bubble Overhead|Pipeline bubble]] — 流水线排空导致的设备空闲
-- 3D Parallelism (PTD-P) — Pipeline + Tensor + Data parallelism 的组合方案
+- [[3d-parallelism|3D Parallelism (PTD-P)]] — Pipeline + Tensor + Data parallelism 的组合方案
 
 **Extracted Figures:**
 - `meg_cluster_fig2_ptdp_combination.png` — PTD-P（Pipeline + Tensor + Data）并行组合方案

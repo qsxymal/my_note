@@ -7,6 +7,22 @@ tags: [distributed-training, model-parallelism, tensor-parallelism, transformer]
 
 # Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism
 
+| 项目 | 内容 |
+|------|------|
+| **Authors** | Mohammad Shoeybi, Mostofa Patwary, Raul Puri, Patrick LeGresley, Jared Casper, Bryan Catanzaro (NVIDIA) |
+| **Published** | 2019-09 (SC 2020) |
+| **Link** | [arXiv 1909.08053](https://arxiv.org/abs/1909.08053) |
+
+**一句话总结:**
+- 提出简单高效的 intra-layer tensor parallelism，仅需在 PyTorch 中插入少量通信原语，512 GPU 上训练 8.3B GPT-2 达 76% 扩展效率。
+
+**核心贡献:**
+- 利用 Transformer 结构实现列/行拆分 GEMM 配对，消除中间同步点（f/g 算子）
+- 发现 BERT 的 Pre-LN vs Post-LN 对训练稳定性至关重要（影响后续所有大模型架构）
+- 8.3B GPT-2 在 WikiText103（10.81 ppl）和 3.9B BERT 在 RACE（90.9%）达到 SOTA
+
+---
+
 ### 1. Background & Motivation
 
 语言模型规模持续增长（GPT-2、BERT），单个 GPU 的内存无法容纳。

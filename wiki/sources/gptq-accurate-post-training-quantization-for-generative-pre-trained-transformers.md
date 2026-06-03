@@ -7,6 +7,22 @@ tags: [quantization, llm, weight-only, w4a16, hessian]
 
 # GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers
 
+| 项目 | 内容 |
+|------|------|
+| **Authors** | Elias Frantar, Saleh Ashkboos, Torsten Hoefler, Dan Alistarh (IST Austria / ETH Zurich) |
+| **Published** | 2022-10 (ICLR 2023) |
+| **Link** | [arXiv 2210.17323](https://arxiv.org/abs/2210.17323) |
+
+**一句话总结:**
+- 基于 Hessian 二阶近似的 weight-only 量化方法，通过懒惰批量更新和 Cholesky 分解将 OBQ 扩展至 GPT 规模，首次实现 175B 模型单卡推理。
+
+**核心贡献:**
+- 将 OBQ（逐权重量化+误差补偿）高效扩展至 GPT 规模（三个实用改进）
+- 4-bit GPTQ 在 OPT-175B 上达到无损精度，3.25x 推理加速
+- 首次实现 175B 参数模型放入单张 A100-80G 进行生成式推理
+
+---
+
 ### 1. Background & Motivation
 
 GPT 系列模型规模巨大（175B 参数），推理成本极高。此前量化方法分两类：一是 [[llm.int8-8-bit-matrix-multiplication-for-transformers-at-scale|LLM.int8()]] 等 W8A8 方法面向推理加速，二是 weight-only 量化用于减少显存占用。但 weight-only 量化在 4-bit 以下精度损失严重，且此前方法缺乏对**大模型**（>100B）的验证。

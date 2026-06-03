@@ -7,6 +7,22 @@ tags: [distributed-training, pipeline-parallelism, model-parallelism]
 
 # GPipe: Easy Scaling with Micro-Batch Pipeline Parallelism
 
+| 项目 | 内容 |
+|------|------|
+| **Authors** | Yanping Huang, Youlong Cheng, Ankur Bapna, Orhan Firat, Mia Xu Chen, Dehao Chen, HyoukJoong Lee, Jiquan Ngiam, Quoc V. Le, Yonghui Wu, Zhifeng Chen (Google) |
+| **Published** | 2018-11 (NeurIPS 2019) |
+| **Link** | [arXiv 1811.06965](https://arxiv.org/abs/1811.06965) |
+
+**一句话总结:**
+- 提出 batch-splitting pipeline parallelism 和同步梯度更新，实现 task-independent、接近线性加速比的模型并行方案，训练 6B 多语言 NMT 和 557M AmoebaNet。
+
+**核心贡献:**
+- 首创 micro-batch splitting + 同步梯度更新的 pipeline parallelism 范式
+- Bubble overhead 分析：当 $M \ge 4K$ 时可忽略，奠定后续 1F1B 等调度基础
+- 首次训练 6B 参数 128 层多语言 Transformer（103 语言），超越所有双语 baseline
+
+---
+
 ### 1. Background & Motivation
 
 随着模型规模增长（ImageNet 上 accuracy 与模型大小的强相关、NMT 中 BLEU 随深度提升），单加速器内存成为瓶颈。此前模型并行方法分为两类：

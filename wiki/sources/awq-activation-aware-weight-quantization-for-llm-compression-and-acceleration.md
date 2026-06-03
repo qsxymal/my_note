@@ -7,6 +7,22 @@ tags: [quantization, llm, weight-only, w4a16, on-device]
 
 # AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration
 
+| 项目 | 内容 |
+|------|------|
+| **Authors** | Ji Lin, Jiaming Tang, Haotian Tang, Shang Yang, Wei-Ming Chen, Wei-Chen Wang, Guangxuan Xiao, Xingyu Dang, Chuang Gan, Song Han (MIT HAN Lab) |
+| **Published** | 2023-06 (MLSys 2024) |
+| **Link** | [arXiv 2306.00978](https://arxiv.org/abs/2306.00978) |
+
+**一句话总结:**
+- 通过激活分布识别仅 ~1% 的重要权重通道并加以保护，实现 4-bit weight-only 量化，无需反向传播，泛化性优于 GPTQ。
+
+**核心贡献:**
+- 发现"保护哪些权重应看激活分布而非权重本身"的核心洞察
+- 提出 per-channel scaling 变换实现等效的 salient weight 保护，零额外推理开销
+- 配套 TinyChat 端侧推理引擎，在 Jetson Orin 和 Raspberry Pi 上部署 7B 模型
+
+---
+
 ### 1. Background & Motivation
 
 前两代量化方案（[[llm.int8-8-bit-matrix-multiplication-for-transformers-at-scale|LLM.int8()]] 和 [[smoothquant-accurate-and-efficient-post-training-quantization-for-large-language-models|SmoothQuant]]）主要解决 **W8A8 推理加速**，但 8-bit 对**端侧部署**仍不够——手机、笔记本等设备需要 4-bit 甚至更低精度才能真正跑起 LLM。
