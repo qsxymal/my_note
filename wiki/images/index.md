@@ -43,3 +43,50 @@
 | `gptq/gptq_fig_ablation.png` | GPTQ 算法流程：Cholesky 预处理 + 懒惰批量更新 |
 | `gptq/gptq_fig_speedup.png` | GPTQ 4-bit 推理加速比与 175B 模型单卡部署 |
 | `gptq/gptq_table_results.png` | 跨模型量化精度对比 |
+
+## GPipe
+
+| File | Description |
+|------|-------------|
+| `gpipe/gpipe_fig1_model_scaling.png` | ImageNet accuracy 和 BLEU vs model size 的强相关 |
+| `gpipe/gpipe_fig2_pipeline_mechanism.png` | GPipe batch-splitting pipeline parallelism 核心机制 |
+| `gpipe/gpipe_fig2c_pipeline_timing.png` | Pipeline timing diagram：K=4 个加速器上的 bubble overhead |
+| `gpipe/gpipe_table1_model_capacity.png` | GPipe 支持的最大模型容量（AmoebaNet + Transformer） |
+| `gpipe/gpipe_fig3_translation_quality.png` | 6B 多语言 NMT 在各语言上的翻译质量提升 |
+
+## Megatron-LM
+
+| File | Description |
+|------|-------------|
+| `megatron-lm/megatron_fig1_scaling.png` | 模型并行 + 数据并行在 512 GPU 上的弱扩展 FLOPS |
+| `megatron-lm/megatron_fig3a_mlp_parallel.png` | Transformer MLP 块的行/列拆分模型并行 |
+| `megatron-lm/megatron_fig4_communication.png` | 单个 Transformer 层中的 4 次通信操作 |
+| `megatron-lm/megatron_fig7_bert_layernorm.png` | BERT Pre-LN vs Post-LN 架构对比 |
+| `megatron-lm/megatron_fig8_hybrid_parallel.png` | 混合模型并行 + 数据并行的 GPU 分组方案 |
+
+## Megatron-LM GPU Clusters (PTD-P)
+
+| File | Description |
+|------|-------------|
+| `megatron-cluster/meg_cluster_fig2_ptdp_combination.png` | PTD-P（Pipeline + Tensor + Data）并行组合 |
+| `megatron-cluster/meg_cluster_fig4_interleaved_schedule.png` | 1F1B vs Interleaved 流水线调度对比 |
+| `megatron-cluster/meg_cluster_fig5_tensor_parallel.png` | Transformer 层内的 tensor parallelism 拆分 |
+| `megatron-cluster/meg_cluster_fig11_perf_comparison.png` | 多种并行配置吞吐性能对比 |
+
+## Optimus (Efficient 2D Method)
+
+| File | Description |
+|------|-------------|
+| `optimus/optimus_fig4_optimus_architecture.png` | Optimus MLP + Self-Attention 的 2D SUMMA 架构 |
+| `optimus/optimus_fig7_scaling.png` | Weak/Strong scaling 效率（Optimus vs Megatron） |
+| `optimus/optimus_fig9_memory_limits.png` | Memory limits 对比（Optimus 8× batch size） |
+
+## Reducing Activation Recomputation
+
+| File | Description |
+|------|-------------|
+| `activation/activation_fig1_memory_breakdown.png` | 参数、优化器状态、激活显存分解——激活是最大瓶颈 |
+| `activation/activation_fig3_self_attention_selective.png` | Self-attention 中 selective recomputation 的重算范围 |
+| `activation/activation_fig5_tp_with_sequence.png` | Tensor + Sequence Parallelism 结合的 Transformer 层 |
+| `activation/activation_fig7_memory_reduction.png` | 各技术激活内存降低效果（5× 降低） |
+| `activation/activation_fig8_perf_breakdown.png` | 各规模模型前向/反向/重算时间分解
