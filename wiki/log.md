@@ -1,5 +1,14 @@
 # Wiki Log
 
+## [2026-06-03] restructuring | Categorize raw/ and wiki/sources/ into subdirectories
+
+- `raw/` 按类别分为 6 个子目录：architecture/、parallelism/、quantization/、representation/、inference/、training/
+- `wiki/sources/` 同步分为 6 个子目录（同一分类体系）
+- 更新 `wiki/index.md` 中的 Sources 链接路径为 `sources/category/page.md`
+- 更新 `CLAUDE.md` 目录结构说明
+- 更新 `paper-analysis` 技能（搜索 raw/ 子目录）
+- `[[wikilinks]]` 基于 slug 无需修改，完全兼容
+
 ## [2026-06-03] ingest | Better & Faster LLMs via Multi-token Prediction
 
 - 添加 source 页面: `sources/better-and-faster-large-language-models-via-multi-token-prediction.md`
