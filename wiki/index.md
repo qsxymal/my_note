@@ -17,9 +17,27 @@
 - [Sequence Parallelism](concepts/sequence-parallelism.md) — 沿序列维度分布激活，与 tensor parallelism 正交，零额外通信
 - [3D Parallelism (PTD-P)](concepts/3d-parallelism.md) — Pipeline + Tensor + Data parallelism 的组合方案，训练万亿参数模型的标准配置
 - [Gradient Checkpointing](concepts/gradient-checkpointing.md) — 前向丢弃中间激活、反向重算的 memory-saving 技术
+- [RoPE (Rotary Position Embedding)](concepts/rope.md) — 通过旋转矩阵编码相对位置的 LLM 事实标准位置编码方案
+- [DeepNorm](concepts/deepnorm.md) — 修改残差连接的 normalization + 理论初始化，将 Transformer 扩展到 1,000 层
+- [Block-Attention](concepts/block-attention.md) — 将 RAG 文档划分为独立 block 各算 KV cache、仅 query 关注全局的 attention 变体
+- [Sparse Attention](concepts/sparse-attention.md) — 通过稀疏注意力矩阵将 self-attention 从 O(n²) 降至 O(n) 的技术集合
+- [Positional Interpolation](concepts/positional-interpolation.md) — 线性缩放 RoPE 位置索引以扩展 LLM 上下文窗口的技术
+- [Multi-Token Prediction](concepts/multi-token-prediction.md) — 共享 trunk + n 个独立 head 同时预测未来 n 个 token，兼具训练质量提升和推理自加速
+- [PagedAttention](concepts/pagedattention.md) — 借鉴虚拟内存分页管理 KV cache，消除碎片、支持跨请求 memory sharing
+- [ELMo](concepts/elmo.md) — 将预训练 biLM 所有层表示加权组合为上下文词向量，开创预训练+微调范式
+- [Big Bird](concepts/big-bird.md) — Random + Window + Global 三种稀疏 attention 组件组合，O(n) 复杂度逼近 full attention
+- [2D Parallelism](concepts/2d-parallelism.md) — 基于 SUMMA 的 2D 分区模型并行，参数和激活同时分布化，消除激活冗余瓶颈
+- [Transformer](concepts/transformer.md) — 完全基于 self-attention 的序列建模架构，现代 LLM 的基础
+- [BERT](concepts/bert.md) — 深度双向 Transformer 预训练模型，通过 MLM + NSP 学习双向表示
 
 ## Sources
 
+- [Attention Is All You Need (Transformer)](sources/attention-is-all-you-need.md) — 完全基于注意力机制的序列模型架构
+- [RoFormer: Enhanced Transformer with Rotary Position Embedding (RoPE)](sources/roformer-enhanced-transformer-with-rotary-position-embedding.md) — 用旋转矩阵编码位置信息，使 attention 内积仅依赖于相对位置，已成为 LLM 事实标准的位置编码方案，抛弃 RNN/CNN，提出 scaled dot-product attention + multi-head attention，奠定现代大模型基础
+- [Block-Attention for Efficient Prefilling](sources/block-attention-for-efficient-prefilling.md) — 将 RAG 文档划分为独立 block 各算各的 KV cache，仅 query block 关注全局，TTFT 降低 98.7%
+- [BERT: Pre-training of Deep Bidirectional Transformers](sources/bert-pre-training-of-deep-bidirectional-transformers-for-language-understanding.md) — 通过 Masked LM + NSP 实现深度双向预训练，在 11 项 NLP 任务上取得 SOTA，开启 NLP 预训练-微调范式
+- [BERT Rediscovers the Classical NLP Pipeline](sources/bert-rediscovers-the-classical-nlp-pipeline.md) — 探测 BERT 各层发现其内部按经典 NLP pipeline 顺序编码语言信息，且可动态修订
+- [Better & Faster LLMs via Multi-token Prediction](sources/better-and-faster-large-language-models-via-multi-token-prediction.md) — 用 n 个独立 head 同时预测多 token，提升采样效率 + 推理 3× 自加速
 - [LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale](sources/llm.int8-8-bit-matrix-multiplication-for-transformers-at-scale.md) — 首次实现无精度损失的 175B 参数级 Transformer Int8 量化推理，核心发现 outlier 特征在 6.7B 参数时相变式涌现
 - [SmoothQuant: Accurate and Efficient Post-Training Quantization for LLMs](sources/smoothquant-accurate-and-efficient-post-training-quantization-for-large-language-models.md) — W8A8 量化方案，通过迁移量化难度到权重实现纯 INT8 GEMM，最高 1.56x 加速
 - [AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration](sources/awq-activation-aware-weight-quantization-for-llm-compression-and-acceleration.md) — 基于激活分布保护 ~1% salient weight channels 的 4-bit weight-only 量化，无需反向传播，泛化性优于 GPTQ
@@ -29,3 +47,8 @@
 - [Optimus: An Efficient 2D Method for Training Super-Large Deep Learning Models](sources/an-efficient-2d-method-for-training-super-large-deep-learning-models.md) — 基于 SUMMA 的 2D 模型并行，同时分布参数和激活，1.48× 加速和 8× batch size vs Megatron
 - [Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM](sources/efficient-large-scale-language-model-training-on-gpu-clusters-using-megatron-lm.md) — PTD-P（3D 并行）+ interleaved 流水线调度，3072 GPU 上训练 1 万亿参数模型达到 502 petaFLOP/s
 - [Reducing Activation Recomputation in Large Transformer Models](sources/reducing-activation-recomputation-in-large-transformer-models.md) — sequence parallelism + selective activation recomputation，激活内存降 5×，recomputation 开销从 36% 降至 2%
+- [Big Bird: Transformers for Longer Sequences](sources/big-bird-transformers-for-longer-sequences.md) — 通过 random + window + global 三种稀疏 attention 组件以 O(n) 复杂度逼近 full attention，支持 8× 更长序列，含理论保证
+- [Deep contextualized word representations (ELMo)](sources/deep-contextualized-word-representations.md) — 将 biLM 所有层的表示加权组合作为上下文词向量，首次证明预训练语言模型在 6 项 NLP 任务上的有效性，开创预训练范式
+- [DeepNet: Scaling Transformers to 1,000 Layers](sources/deepnet-scaling-transformers-to-1000-layers.md) — 提出 DeepNorm + 理论初始化将 Transformer 扩展到 1,000 层，200 层 3.2B 模型超越 48 层 12B（+5 BLEU）
+- [PagedAttention: Efficient Memory Management for LLM Serving with vLLM](sources/efficient-memory-management-for-large-language-model-serving-with-pagedattention.md) — 将 OS 分页/虚拟内存引入 KV cache 管理，PagedAttention 算法 + vLLM 系统，吞吐量 2-4× 提升
+- [Extending Context Window via Positional Interpolation](sources/extending-context-window-via-positional-interpolation.md) — 线性缩放 RoPE 位置索引 + 1000 steps 微调将 LLaMA 窗口从 2048 扩展到 32768

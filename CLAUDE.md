@@ -21,3 +21,4 @@
 - `wiki/images/index.md` maintains the centralized image index with description table
 - Embed figures in source pages with standard Markdown: `![描述](./images/paper-name/filename.png)`
 - Place images after the paragraph that introduces them, not before
+- **Figure extraction priority**: ① `bin/arxiv-figure-dl.py <arxiv_id> --outdir wiki/images/<paper>/` (arXiv e-print source, highest quality), ② PyMuPDF4LLM, ③ PDF page rendering + clipping

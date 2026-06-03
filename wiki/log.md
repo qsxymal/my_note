@@ -1,5 +1,102 @@
 # Wiki Log
 
+## [2026-06-03] ingest | Better & Faster LLMs via Multi-token Prediction
+
+- 添加 source 页面: `sources/better-and-faster-large-language-models-via-multi-token-prediction.md`
+- 提取关键图表至 `images/multi-token-prediction/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | BERT Rediscovers the Classical NLP Pipeline
+
+- 添加 source 页面: `sources/bert-rediscovers-the-classical-nlp-pipeline.md`
+- 提取关键图表至 `images/bert-pipeline/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | BERT: Pre-training of Deep Bidirectional Transformers
+
+- 添加 source 页面: `sources/bert-pre-training-of-deep-bidirectional-transformers-for-language-understanding.md`
+- 提取关键图表至 `images/bert/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | Attention Is All You Need (Transformer)
+
+- 添加 source 页面: `sources/attention-is-all-you-need.md`
+- 提取关键图表至 `images/transformer/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | RoFormer: Rotary Position Embedding (RoPE)
+
+- 添加 source 页面: `sources/roformer-enhanced-transformer-with-rotary-position-embedding.md`
+- 提取关键图表至 `images/rope/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | DeepNet: Scaling Transformers to 1,000 Layers
+
+- 添加 source 页面: `sources/deepnet-scaling-transformers-to-1000-layers.md`
+- 提取关键图表至 `images/deepnet/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | Deep contextualized word representations (ELMo)
+
+- 添加 source 页面: `sources/deep-contextualized-word-representations.md`
+- 提取关键图表至 `images/elmo/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | Block-Attention for Efficient Prefilling
+
+- 添加 source 页面: `sources/block-attention-for-efficient-prefilling.md`
+- 提取关键图表至 `images/block-attention/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | Big Bird: Transformers for Longer Sequences
+
+- 添加 source 页面: `sources/big-bird-transformers-for-longer-sequences.md`
+- 提取关键图表至 `images/big-bird/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] ingest | PagedAttention: Efficient Memory Management for LLM Serving with vLLM
+
+- 添加 source 页面: `sources/efficient-memory-management-for-large-language-model-serving-with-pagedattention.md`
+- 提取关键图表至 `images/pagedattention/`
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] concepts | Add concept pages for new papers
+
+- 添加 concept 页面: `concepts/rope.md` — Rotary Position Embedding
+- 添加 concept 页面: `concepts/deepnorm.md` — DeepNorm normalization
+- 添加 concept 页面: `concepts/block-attention.md` — Block-Attention for RAG
+- 添加 concept 页面: `concepts/sparse-attention.md` — Sparse attention patterns (Big Bird)
+- 更新 `index.md`
+
+## [2026-06-03] ingest | Positional Interpolation for Context Extension
+
+- 添加 source 页面: `sources/extending-context-window-via-positional-interpolation.md`
+- 添加 concept 页面: `concepts/positional-interpolation.md`
+- 提取关键图表至 `images/positional-interpolation/`
+- 添加 wikilinks 至 [[RoPE]] 和 [[positional-interpolation]]
+- 更新 `index.md`, `images/index.md`
+
+## [2026-06-03] concepts | Add missing concept pages
+
+- 添加 concept 页面: `concepts/multi-token-prediction.md` — Multi-Token Prediction
+- 添加 concept 页面: `concepts/pagedattention.md` — PagedAttention
+- 添加 concept 页面: `concepts/elmo.md` — ELMo
+- 添加 concept 页面: `concepts/big-bird.md` — Big Bird
+- 添加 concept 页面: `concepts/2d-parallelism.md` — 2D Parallelism (Optimus)
+- 添加 concept 页面: `concepts/transformer.md` — Transformer 架构
+- 添加 concept 页面: `concepts/bert.md` — BERT
+- 更新 `index.md`
+
+## [2026-06-03] enhancement | arXiv source figure extraction
+
+- 新增 `bin/arxiv-figure-dl.py` — 从 arXiv e-print 源码包提取原始图表
+- 已为 18 篇论文下载源码并替换高分辨率图（600 DPI 矢量渲染）
+- 更新 `CLAUDE.md`（figure extraction priority）
+- 图片索引全覆盖 119 张图，无缺失引用
+- 主要升级：SmoothQuant（~28MB 高质量图）、PagedAttention、BERT、DeepNet、Big Bird 等
+- Transformer 架构图回退到 600 DPI 直裁（源码 ModalNet-19 分辨率不足）
+
+
 ## [2026-06-02] ingest | LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale
 
 - 添加 source 页面: `sources/llm.int8-8-bit-matrix-multiplication-for-transformers-at-scale.md`
