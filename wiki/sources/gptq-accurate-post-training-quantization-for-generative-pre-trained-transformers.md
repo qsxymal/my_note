@@ -33,7 +33,7 @@ GPT 系列模型规模巨大（175B 参数），推理成本极高。此前量�
 
 GPTQ 是 **OBQ（Optimal Brain Quantizer）在大模型上的高效扩展**。OBQ 是一种基于最优脑损伤（Optimal Brain Damage）框架的逐权重量化方法：逐个量化权重，并动态调整剩余权重以补偿量化误差。
 
-![Figure 1: OBQ 到 GPTQ——逐列量化权重，并用 Hessian 信息更新剩余列以补偿误差](../images/gptq/gptq_fig1_method.png)
+![Figure 1: OBQ 到 GPTQ——逐列量化权重，并用 Hessian 信息更新剩余列以补偿误差](../images/gptq/gptq_fig1a_quantizing_opt_models.png)
 
 数学上，GPTQ 使用 Hessian 矩阵 $H = 2XX^T$（$X$ 为校准数据的激活）来量化每列权重。量化第 $i$ 列时：
 1. 找到最优量化值 $q_i = \text{quant}(w_i)$

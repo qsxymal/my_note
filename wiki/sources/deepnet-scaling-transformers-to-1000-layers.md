@@ -27,7 +27,7 @@ tags: [transformer, deep-network, normalization, training-stability, nmt]
 
 ### 1. Background & Motivation
 
-![Figure 1: Depth trend](../images/deepnet/deepnet_fig1_depth_trend.png)
+![Figure 1: Depth trend](../images/deepnet/deepnet_fig1_trend_transformer_depths.png)
 
 虽然 Transformer 参数量从百万增长到万亿，但模型**深度**增长缓慢（2022 年最深的也不过 GPT-3 的 96 层）。核心瓶颈是训练不稳定性：
 
@@ -76,7 +76,7 @@ DeepNet 在所有深度（10L-10L 到 100L-100L）上表现最佳，且深度越
 | **DeepNet** | **200** | **863M** | **33.2** | **29.0** | **31.1** |
 | **DeepNet** | **1000** | **3.8B** | **33.9** | **30.2** | **32.1** |
 
-![Figure 8: BLEU vs depth](../images/deepnet/deepnet_fig8_bleu_vs_depth.png)
+![Figure 8: BLEU vs depth](../images/deepnet/deepnet_fig8_average_bleu_scores.png)
 
 深度从 10L 增加到 1000L，BLEU 从约 27 持续升到约 33——**没有出现收益递减**，暗示更深模型仍有提升空间。
 

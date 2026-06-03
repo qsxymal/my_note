@@ -33,13 +33,13 @@ tags: [pre-training, language-representation, bidirectional, transformer-encoder
 
 核心问题：**现有预训练方法都是单向的**。GPT 使用 left-to-right Transformer，每个 token 只能关注左侧上下文。ELMo 虽拼接了独立训练的 left-to-right 和 right-to-left LSTM，但"双向"仅在最后一层浅层完成，并非真正的深度双向。
 
-![Figure 3: BERT vs OpenAI GPT vs ELMo 架构对比](../images/bert/bert_fig3_architecture_comparison.png)
+![Figure 3: BERT vs OpenAI GPT vs ELMo 架构对比](../images/bert/bert_fig3_differences_pre_training.png)
 
 BERT 的关键洞察：**只有 BERT 在所有层同时条件化左右上下文**（通过 MLM），而 GPT 只能看左边，ELMo 的 LSTM 拼接并非真正联合双向。
 
 ### 2. High-Level Method
 
-![Figure 1: BERT 预训练和微调流程](../images/bert/bert_fig1_pretrain_finetune.png)
+![Figure 1: BERT 预训练和微调流程](../images/bert/bert_fig1_overall_pre_training.png)
 
 BERT 架构是 **multi-layer bidirectional Transformer encoder**（即 Transformer 的编码器部分）。两个主要规格：
 
@@ -61,7 +61,7 @@ BERT 架构是 **multi-layer bidirectional Transformer encoder**（即 Transform
 
 **输入表示：**
 
-![Figure 2: BERT 输入表示](../images/bert/bert_fig2_input_repr.png)
+![Figure 2: BERT 输入表示](../images/bert/bert_fig2_bert_input_representation.png)
 
 输入 = Token Embeddings + Segment Embeddings + Position Embeddings 之和。
 - [CLS] — 每个序列的第一个 token，其最终隐状态用于分类任务
@@ -78,7 +78,7 @@ BERT 架构是 **multi-layer bidirectional Transformer encoder**（即 Transform
 - 分类任务 → 取 [CLS] 的隐状态 + 分类层
 - 标注任务（NER、SQuAD） → 取每个 token 的隐状态 + 输出层
 
-![Figure 4: 不同任务的微调方式](../images/bert/bert_fig4_finetuning_tasks.png)
+![Figure 4: 不同任务的微调方式](../images/bert/bert_fig4_illustrations_fine_tuning.png)
 
 ### 4. Experiments & Results
 

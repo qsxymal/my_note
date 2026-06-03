@@ -26,7 +26,7 @@ tags: [position-encoding, context-window, length-extension, rope, llama]
 
 ### 1. Background & Motivation
 
-![Figure 1: Interpolation method](../images/positional-interpolation/pi_fig1_interpolation_method.png)
+![Figure 1: Interpolation method](../images/positional-interpolation/pi_fig1_effective_context_window.png)
 
 RoPE-based LLM（如 LLaMA）的上下文窗口固定为 2048 tokens，直接超出预训练范围使用时 perplexity 会飙升到 >10³（相当于未训练模型）。直接 fine-tuning 扩展也极其低效——训练 10000+ steps 后有效窗口仅从 2048 增加到 2560。
 
@@ -42,7 +42,7 @@ $$f'(x, m) = f(x, m/\lambda), \quad \lambda = L' / L$$
 
 **为什么 interpolation 优于 extrapolation（Figure 2 的核心发现）：**
 
-![Figure 2: Extrapolation vs Interpolation](../images/positional-interpolation/pi_fig2_extrapolation_vs_interpolation.png)
+![Figure 2: Extrapolation vs Interpolation](../images/positional-interpolation/pi_fig2_illustration_position_interpolation.png)
 
 左图：随机拟合的 attention score 函数在 [0, 2048] 内表现良好，但在区间外出界到 8000+。
 右图：Interpolation 保证 query-key 位置差 s 始终在相邻整数 grid 之间，函数值平滑有界。

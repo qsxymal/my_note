@@ -35,14 +35,14 @@ tags: [transformer, attention, architecture, sequence-modeling, foundation-model
 
 Transformer 遵循编码器-解码器架构，但完全由 **self-attention** 和 **position-wise FFN** 构成。
 
-![Figure 1: Transformer 模型架构](../images/transformer/transformer_fig1_architecture.png)
+![Figure 1: Transformer 模型架构](../images/transformer/transformer_fig1_transformer_model_architecture.png)
 
 **编码器：** N=6 个相同层，每层包含两个子层：multi-head self-attention → position-wise FFN。每个子层后接 residual connection + layer normalization。
 
 **解码器：** N=6 个相同层，在编码器两层基础上插入第三个子层——对编码器输出做 multi-head cross-attention。解码器 self-attention 使用 **masking** 确保位置 i 只能关注 i 之前的位置（保持自回归性质）。
 
-![Figure 2: Scaled Dot-Product Attention (左) 和 Multi-Head Attention (右)](../images/transformer/transformer_fig2_scaled_dot_attn.png)
-![Figure 2: Multi-Head Attention](../images/transformer/transformer_fig2_multi_head_attn.png)
+![Figure 2: Scaled Dot-Product Attention (左) 和 Multi-Head Attention (右)](../images/transformer/transformer_fig2a_scaled_dot_product.png)
+![Figure 2: Multi-Head Attention](../images/transformer/transformer_fig2b_scaled_dot_product.png)
 
 **Scaled Dot-Product Attention:**
 $$

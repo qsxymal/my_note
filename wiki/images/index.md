@@ -15,8 +15,8 @@
 
 | File | Description |
 |------|-------------|
-| `smoothquant/smoothquant_fig1_model_scaling.png` | 大模型规模 vs GPU 内存增长趋势——量化弥合供需差距 |
-| `smoothquant/smoothquant_fig2_migration_intuition.png` | 核心直觉：激活因 outlier 难量化，平滑后激活和权重都易于量化 |
+| `smoothquant/smoothquant_fig1_precision_mapping_transformer.png` | 大模型规模 vs GPU 内存增长趋势——量化弥合供需差距 |
+| `smoothquant/smoothquant_fig2_suitable_migration_strength.png` | 核心直觉：激活因 outlier 难量化，平滑后激活和权重都易于量化 |
 | `smoothquant/smoothquant_fig3_quant_schemes.png` | Per-tensor vs per-token+per-channel 量化定义与硬件兼容性 |
 | `smoothquant/smoothquant_fig4_magnitude_evidence.png` | OPT-13B 激活与权重幅值分布——平滑前后对比 |
 | `smoothquant/smoothquant_fig5_smoothing_factor.png` | Smoothing factor 计算与融合到前一层参数的流程 |
@@ -39,7 +39,7 @@
 
 | File | Description |
 |------|-------------|
-| `gptq/gptq_fig1_method.png` | OBQ→GPTQ 方法：逐列量化 + Hessian 误差补偿 |
+| `gptq/gptq_fig1a_quantizing_opt_models.png` | OBQ→GPTQ 方法：逐列量化 + Hessian 误差补偿 |
 | `gptq/gptq_fig_ablation.png` | GPTQ 算法流程：Cholesky 预处理 + 懒惰批量更新 |
 | `gptq/gptq_fig_speedup.png` | GPTQ 4-bit 推理加速比与 175B 模型单卡部署 |
 | `gptq/gptq_table_results.png` | 跨模型量化精度对比 |
@@ -76,10 +76,10 @@
 
 | File | Description |
 |------|-------------|
-| `bert/bert_fig1_pretrain_finetune.png` | 预训练 + 微调整体流程：预训练用 MLM+NSP，微调只需替换输入输出层 |
-| `bert/bert_fig2_input_repr.png` | 输入表示：Token Embedding + Segment Embedding + Position Embedding 求和 |
-| `bert/bert_fig3_architecture_comparison.png` | BERT (bi-directional) vs OpenAI GPT (left-to-right) vs ELMo (LSTM) 架构差异 |
-| `bert/bert_fig4_finetuning_tasks.png` | 不同下游任务的微调方式（分类、QA、NER、句对分类） |
+| `bert/bert_fig1_overall_pre_training.png` | 预训练 + 微调整体流程：预训练用 MLM+NSP，微调只需替换输入输出层 |
+| `bert/bert_fig2_bert_input_representation.png` | 输入表示：Token Embedding + Segment Embedding + Position Embedding 求和 |
+| `bert/bert_fig3_differences_pre_training.png` | BERT (bi-directional) vs OpenAI GPT (left-to-right) vs ELMo (LSTM) 架构差异 |
+| `bert/bert_fig4_illustrations_fine_tuning.png` | 不同下游任务的微调方式（分类、QA、NER、句对分类） |
 | `bert/bert_table1_glue.png` | GLUE 8 任务结果——BERT_LARGE 平均 82.1，高于 GPT 7% |
 | `bert/bert_table2_squad.png` | SQuAD 1.1/2.0 EM 和 F1 分数——BERT_LARGE F1 93.2/83.1 |
 | `bert/bert_table5_ablation_pretrain.png` | 预训练任务消融：去掉 NSP 和双向性后各任务精度大幅下降 |
@@ -90,9 +90,9 @@
 
 | File | Description |
 |------|-------------|
-| `transformer/transformer_fig1_architecture.png` | Transformer 编码器-解码器架构图——N×6 层 self-attention + FFN，residual + layer norm |
-| `transformer/transformer_fig2_scaled_dot_attn.png` | Scaled Dot-Product Attention: QK^T/√d_k → softmax → weighted sum |
-| `transformer/transformer_fig2_multi_head_attn.png` | Multi-Head Attention: h=8 头的并行 attention 拼接再投影 |
+| `transformer/transformer_fig1_transformer_model_architecture.png` | Transformer 编码器-解码器架构图——N×6 层 self-attention + FFN，residual + layer norm |
+| `transformer/transformer_fig2a_scaled_dot_product.png` | Scaled Dot-Product Attention: QK^T/√d_k → softmax → weighted sum |
+| `transformer/transformer_fig2b_scaled_dot_product.png` | Multi-Head Attention: h=8 头的并行 attention 拼接再投影 |
 | `transformer/transformer_table1_complexity.png` | Self-Attention vs RNN vs CNN 的复杂度、顺序操作数、最大路径长度对比 |
 | `transformer/transformer_table2_translation_results.png` | WMT 2014 翻译 BLEU 分数及训练成本对比——Transformer big 以最低成本达 SOTA |
 | `transformer/transformer_table3_model_variations.png` | 架构消融实验：头数、key 维度、模型大小、dropout、位置编码方式 |
@@ -118,9 +118,9 @@
 |------|-------------|
 | `gpipe/gpipe_fig1_model_scaling.png` | ImageNet accuracy 和 BLEU vs model size 的强相关 |
 | `gpipe/gpipe_fig2_pipeline_mechanism.png` | GPipe batch-splitting pipeline parallelism 核心机制 |
-| `gpipe/gpipe_fig2c_pipeline_timing.png` | Pipeline timing diagram：K=4 个加速器上的 bubble overhead |
+| `gpipe/gpipe_fig2c_figure.png` | Pipeline timing diagram：K=4 个加速器上的 bubble overhead |
 | `gpipe/gpipe_table1_model_capacity.png` | GPipe 支持的最大模型容量（AmoebaNet + Transformer） |
-| `gpipe/gpipe_fig3_translation_quality.png` | 6B 多语言 NMT 在各语言上的翻译质量提升 |
+| `gpipe/gpipe_fig3_translation_quality_across.png` | 6B 多语言 NMT 在各语言上的翻译质量提升 |
 
 ## Megatron-LM
 
@@ -158,18 +158,18 @@
 | `rope/rope_fig1_illustration.png` | RoPE 旋转位置编码图形化示意 |
 | `rope/rope_fig2_long_term_decay.png` | 内积上界随相对距离衰减曲线 |
 | `rope/rope_table1_bleu.png` | WMT 2014 En→De BLEU 对比 |
-| `rope/rope_fig3_mlm_loss.png` | MLM 和 PerFormer 训练 loss 曲线 |
+| `rope/rope_fig3a_evaluation_rope_language.png` | MLM 和 PerFormer 训练 loss 曲线 |
 
 ## DeepNet
 
 | File | Description |
 |------|-------------|
-| `deepnet/deepnet_fig1_depth_trend.png` | NLP 模型深度趋势——DeepNet 突破 1,000 层 |
+| `deepnet/deepnet_fig1_trend_transformer_depths.png` | NLP 模型深度趋势——DeepNet 突破 1,000 层 |
 | `deepnet/deepnet_table1_bleu_comparison.png` | WMT-17 各方法+深度 BLEU 对比——DeepNet 全程最优 |
 | `deepnet/deepnet_table2_opus100.png` | OPUS-100 多语言翻译——200 层 31.1 BLEU |
 | `deepnet/deepnet_table3_m2m_comparison.png` | M2M-100 12B vs DeepNet 3.2B——全面超越 |
 | `deepnet/deepnet_fig6_iwslt_results.png` | IWSLT-14 深度 vs BLEU——含 8 种方法对比 |
-| `deepnet/deepnet_fig8_bleu_vs_depth.png` | 深度 vs BLEU 散点——持续增长无饱和 |
+| `deepnet/deepnet_fig8_average_bleu_scores.png` | 深度 vs BLEU 散点——持续增长无饱和 |
 
 ## ELMo
 
@@ -213,8 +213,8 @@
 
 | File | Description |
 |------|-------------|
-| `positional-interpolation/pi_fig1_interpolation_method.png` | PI 方法示意——线性缩放位置索引使所有位置落在预训练范围内 |
-| `positional-interpolation/pi_fig2_extrapolation_vs_interpolation.png` | Extrapolation 出界 vs Interpolation 有界的 attention score 对比 |
+| `positional-interpolation/pi_fig1_effective_context_window.png` | PI 方法示意——线性缩放位置索引使所有位置落在预训练范围内 |
+| `positional-interpolation/pi_fig2_illustration_position_interpolation.png` | Extrapolation 出界 vs Interpolation 有界的 attention score 对比 |
 | `positional-interpolation/pi_fig3_passkey_prompt.png` | Passkey retrieval 的 prompt 格式 |
 | `positional-interpolation/pi_table1_pg19_perplexity.png` | PG-19/Proof-pile 的 PI vs FT perplexity |
 | `positional-interpolation/pi_table4_effective_window.png` | Passkey retrieval 有效上下文窗口对比 |

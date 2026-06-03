@@ -69,7 +69,7 @@ WMT 2014 En→De，RoFormer 27.5 BLEU vs Transformer-base 27.3。
 
 **MLM 预训练：**
 
-![Figure 3: MLM loss curves](../images/rope/rope_fig3_mlm_loss.png)
+![Figure 3: MLM loss curves](../images/rope/rope_fig3a_evaluation_rope_language.png)
 
 左图：RoFormer 的 MLM loss 下降显著快于 BERT（同等 steps 下更低）。右图：PerFormer + RoPE 相对于无 RoPE 收敛更快、loss 更低——RoPE 兼容线性注意力。
 

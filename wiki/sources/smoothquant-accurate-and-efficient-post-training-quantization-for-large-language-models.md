@@ -27,7 +27,7 @@ tags: [quantization, llm, efficiency, inference, w8a8]
 
 大模型规模增长远超 GPU 内存增速（Figure 1），FP16 推理需要大量 GPU，成本高昂。量化可将权重和激活从 FP16 降到 INT8，理论上内存减半、吞吐翻倍。
 
-![Figure 1: 大模型规模 vs GPU 内存——量化是弥合供需差距的关键手段](../images/smoothquant/smoothquant_fig1_model_scaling.png)
+![Figure 1: 大模型规模 vs GPU 内存——量化是弥合供需差距的关键手段](../images/smoothquant/smoothquant_fig1_precision_mapping_transformer.png)
 
 [[llm.int8-8-bit-matrix-multiplication-for-transformers-at-scale|LLM.int8()]] 首次实现了 175B 模型的 8-bit 推理且精度无损，但它的 mixed-precision decomposition（outlier 用 FP16 计算，其余用 INT8）在 GPU 上实现效率低——每次矩阵乘法都需要分解、分别计算、再拼接，无法充分利用 Tensor Core 的纯 INT8 GEMM 内核。业界需要的是一种 **纯 W8A8** 方案，才能在不依赖混合精度的前提下真正提升吞吐。
 
@@ -39,7 +39,7 @@ SmoothQuant 的关键洞察：不绕开 outlier，而是通过数学等价变换
 
 **核心直觉：** 权重分布平坦均匀、易于量化；激活有 outlier、难以量化。如果通过 per-channel smoothing factor s 对激活做缩放、同时对权重做反向缩放，可以在保持数学等价的前提下，将激活的量化难度**迁移**到权重上（Figure 2）。
 
-![Figure 2: SmoothQuant 核心直觉——激活因 outlier 难量化（有效 quantization level 极低），平滑后激活和权重都易于量化](../images/smoothquant/smoothquant_fig2_migration_intuition.png)
+![Figure 2: SmoothQuant 核心直觉——激活因 outlier 难量化（有效 quantization level 极低），平滑后激活和权重都易于量化](../images/smoothquant/smoothquant_fig2_suitable_migration_strength.png)
 
 具体而言，对线性层 $Y = X \cdot W$，引入平滑变换：
 

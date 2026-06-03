@@ -87,14 +87,15 @@
 - 添加 concept 页面: `concepts/bert.md` — BERT
 - 更新 `index.md`
 
-## [2026-06-03] enhancement | arXiv source figure extraction
+## [2026-06-03] enhancement | arXiv source figure auto-mapping & batch backfill
 
-- 新增 `bin/arxiv-figure-dl.py` — 从 arXiv e-print 源码包提取原始图表
-- 已为 18 篇论文下载源码并替换高分辨率图（600 DPI 矢量渲染）
-- 更新 `CLAUDE.md`（figure extraction priority）
-- 图片索引全覆盖 119 张图，无缺失引用
-- 主要升级：SmoothQuant（~28MB 高质量图）、PagedAttention、BERT、DeepNet、Big Bird 等
-- Transformer 架构图回退到 600 DPI 直裁（源码 ModalNet-19 分辨率不足）
+- 新增 `bin/arxiv_tex_parser.py` — LaTeX figure-number 自动解析器（处理多文件/子图/不同 figure 环境）
+- 增强 `bin/arxiv-figure-dl.py` — 新增 `--abbr`（自动图号映射）和 `--manifest`（JSON manifest）模式
+- 新增 `bin/arxiv-figure-backfill.py` — 批量回刷脚本，自动为 20 篇论文下载并映射原图
+- 更新 `paper-analysis` 技能（Method 0：arXiv source auto-mapping 为首选）
+- 批量回刷 20/20 篇论文全部成功，共生成 ~300 张自动命名高清图
+- 文件命名: `{abbr}_fig{N}{sub}_{keyword}.png`，支持 subfigure a/b/c 检测
+- 边角情况处理：无 LaTeX 源降级文件名提取、未引用备份文件排除、subfigure 同图号
 
 
 ## [2026-06-02] ingest | LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale
